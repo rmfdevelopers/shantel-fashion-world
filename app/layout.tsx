@@ -1,27 +1,27 @@
-import { Playfair_Display, Outfit } from 'next/font/google';
+import { Cormorant_Garamond, DM_Sans } from 'next/font/google';
 import './globals.css';
 
-const heading = Playfair_Display({ 
+const heading = Cormorant_Garamond({ 
   subsets: ['latin'], 
-  variable: '--font-heading',
-  weight: ['400', '700', '900']
+  weight: ['300', '400', '500', '600', '700'],
+  variable: '--font-heading' 
 });
 
-const body = Outfit({ 
+const body = DM_Sans({ 
   subsets: ['latin'], 
-  variable: '--font-body',
-  weight: ['300', '400', '500', '600']
+  weight: ['300', '400', '500', '700'],
+  variable: '--font-body' 
 });
 
 export const metadata = {
-  title: 'Shantel Fashion World | Abuja Luxury Boutique',
-  description: 'Redefining Elegance for the Modern Silhouette. Abuja\'s premier destination for curated luxury bags and footwear.',
+  title: 'Shantel Fashion World | Abuja Luxury Street-Luxe',
+  description: 'Exquisite designer bags, footwear, and trending apparel curated for the modern connoisseur.',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className="scrollbar-hide">
-      <body className={`${heading.variable} ${body.variable} font-sans antialiased selection:bg-primary selection:text-secondary`}>
+    <html lang="en">
+      <body className={`${heading.variable} ${body.variable} font-sans bg-primary text-white`}>
         {children}
       </body>
     </html>
