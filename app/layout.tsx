@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Outfit } from "next/font/google";
+import { Playfair_Display, Outfit } from "next/font/google";
 import "./globals.css";
 
-const heading = Cormorant_Garamond({ 
+const heading = Playfair_Display({ 
   subsets: ["latin"], 
-  weight: ["300", "400", "500", "600", "700"],
   variable: "--font-heading" 
 });
 
@@ -14,8 +13,8 @@ const body = Outfit({
 });
 
 export const metadata: Metadata = {
-  title: "Shantel Fashion World | Luxury Curated Fashion",
-  description: "Redefining Elegance, One Piece at a Time. Luxury bags, designer wear, and premium footwear in Abuja.",
+  title: "Shantel Fashion World | Luxury Fashion Abuja",
+  description: "Your premier destination in Abuja for luxury designer bags, shoes, and trending apparel.",
 };
 
 export default function RootLayout({
@@ -25,7 +24,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${heading.variable} ${body.variable} font-sans`}>
+      <body className={`${heading.variable} ${body.variable} font-sans antialiased bg-primary text-white`}>
         {children}
       </body>
     </html>
