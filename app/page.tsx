@@ -3,19 +3,35 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { 
-  Menu, X, Phone, Instagram, Mail, MapPin, 
-  ArrowRight, Truck, ShieldCheck, Sparkles, 
-  CheckCheck, Loader2, ImageOff, ShoppingBag,
-  Calendar, Users, BadgeCheck
+  ShoppingBag, 
+  Phone, 
+  Instagram, 
+  Mail, 
+  MapPin, 
+  Menu, 
+  X, 
+  ArrowRight, 
+  Loader2, 
+  CheckCheck, 
+  ImageOff,
+  Star,
+  Truck,
+  User,
+  Users,
+  Package,
+  Clock,
+  Shirt,
+  Scissors,
+  Palette
 } from 'lucide-react';
 
 // DESIGN DECISIONS:
 // Layout Energy: editorial
 // Depth Treatment: layered
-// Divider Style: D-RULE
+// Divider Style: D-QUOTE
 // Typography Personality: refined
 
-// --- Utilities ---
+// --- HOOKS ---
 
 const useScrollReveal = (threshold = 0.15) => {
   const ref = useRef<HTMLElement>(null);
@@ -31,6 +47,8 @@ const useScrollReveal = (threshold = 0.15) => {
   return { ref, isVisible };
 };
 
+// --- COMPONENTS ---
+
 function SafeImage({ src, alt, fill, width, height, className, priority, fallbackClassName }: {
   src: string; alt: string; fill?: boolean; width?: number; height?: number;
   className?: string; priority?: boolean; fallbackClassName?: string;
@@ -38,30 +56,71 @@ function SafeImage({ src, alt, fill, width, height, className, priority, fallbac
   const [error, setError] = useState(false);
   if (error) {
     return (
-      <div className={`flex items-center justify-center bg-zinc-900 ${fallbackClassName ?? className ?? ''}`}>
-        <ImageOff size={24} className="text-white/10" />
+      <div className={`flex items-center justify-center bg-gradient-to-br from-primary/60 to-secondary/10 ${fallbackClassName ?? className ?? ''}`}>
+        <ImageOff size={28} className="text-white/20" />
       </div>
     );
   }
   return (
-    <Image 
-      src={src} 
-      alt={alt} 
-      fill={fill}
+    <Image src={src} alt={alt} fill={fill}
       width={!fill ? (width ?? 800) : undefined}
       height={!fill ? (height ?? 600) : undefined}
-      className={className} 
-      priority={priority}
-      onError={() => setError(true)} 
-    />
+      className={className} priority={priority}
+      onError={() => setError(true)} />
   );
 }
 
-// --- Components ---
+// --- CONTENT ---
 
-const Navbar = ({ brand, navLinks }: any) => {
+const brief = {
+  brand: {
+    name: "Shantel Fashion World",
+    tagline: "Redefining Elegance, One Piece at a Time",
+    description: "Discover a curated collection of luxury bags, designer footwear, and trending apparel designed for the modern fashionista.",
+    industry: "Fashion",
+    region: "Nigeria"
+  },
+  contact: {
+    whatsapp: "2347061200116",
+    instagram: "@shantel_fashion_world",
+    address: "Soar plaza shop B308 1st Avenue Gwarimpa opposite FCMB bank, Abuja Nigeria"
+  },
+  features: [
+    { title: "Curated Selection", description: "Every piece is hand-selected to ensure it meets our standards of modern luxury.", icon: Shirt },
+    { title: "Nationwide Delivery", description: "Swift and secure shipping from our Gwarimpa boutique to your doorstep across Nigeria.", icon: Truck },
+    { title: "Personal Styling", description: "Consult with our fashion experts to find the perfect ensemble for any occasion.", icon: User }
+  ],
+  products: [
+    { name: "Designer Leather Tote", description: "Exquisite handcrafted leather bag featuring gold-tone hardware and spacious interior.", price: "₦120,000", image: "https://images.unsplash.com/photo-1778409588769-79e6dde71304?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080" },
+    { name: "Starlight Stilettos", description: "Elegant pointed-toe heels with crystal embellishments for your most glamorous nights.", price: "₦85,000", image: "https://images.unsplash.com/photo-1758789872879-1be800c7bbdb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080" },
+    { name: "Editorial Silk Gown", description: "Floor-length evening dress in premium silk, cut to highlight the feminine silhouette.", price: "₦45,000", image: "https://images.unsplash.com/photo-1551084804-4b60b3c10f9e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080" },
+    { name: "Gold-Rimmed Aviators", description: "High-fashion sunglasses offering 100% UV protection and a bold luxury statement.", price: "₦15,000", image: "https://images.unsplash.com/photo-1611222777277-61319d63ca94?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080" }
+  ],
+  gallery: [
+    "https://images.unsplash.com/photo-1618236444721-4a8dba415c15?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+    "https://images.unsplash.com/photo-1765282946813-d9ccda14c415?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+    "https://images.unsplash.com/photo-1758789872879-1be800c7bbdb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+    "https://images.unsplash.com/photo-1639598003170-acfd39fcd7b1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+    "https://images.unsplash.com/photo-1560519622-7229023b9c86?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+    "https://images.unsplash.com/photo-1774110101478-bb066db7ccf0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080"
+  ],
+  testimonials: [
+    { name: "Amaka Okeke", role: "Loyal Customer", text: "The quality of the bag I bought is incredible. It looks even better in person than on Instagram!" },
+    { name: "Zainab Musa", role: "Fashion Influencer", text: "Found my wedding guest outfit here. The personal styling advice was a lifesaver. Abuja's best kept secret!" },
+    { name: "Chidi Benson", role: "Entrepreneur", text: "Fast delivery and the packaging was so premium. Definitely shopping here again." }
+  ],
+  stats: [
+    { number: "3k+", label: "Fashion Followers", icon: Users },
+    { number: "10k+", label: "Orders Delivered", icon: Package },
+    { number: "5+", label: "Years of Style", icon: Clock }
+  ]
+};
+
+// --- SECTIONS ---
+
+export default function Page() {
   const [scrolled, setScrolled] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
+  const [mobileMenu, setMobileMenu] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60);
@@ -70,302 +129,346 @@ const Navbar = ({ brand, navLinks }: any) => {
   }, []);
 
   return (
-    <nav className={`fixed top-0 left-0 w-full z-[100] transition-all duration-500 ${
-      scrolled ? 'bg-primary/95 backdrop-blur-xl border-b border-white/5 py-4' : 'bg-transparent py-6'
-    }`}>
-      <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
-        <a href="#hero" className="flex items-center gap-2 group">
-          <div className="w-10 h-10 border-2 border-secondary flex items-center justify-center font-heading font-black text-secondary group-hover:bg-secondary group-hover:text-primary transition-all duration-300">
-            S
-          </div>
-          <span className="font-heading text-xl font-bold tracking-tighter uppercase hidden sm:block">Shantel</span>
-        </a>
-
-        <div className="hidden md:flex items-center gap-10">
-          {navLinks.map((link: any) => (
-            <a key={link.name} href={link.href} className="text-xs uppercase tracking-[0.2em] font-semibold text-white/70 hover:text-secondary transition-colors">
-              {link.name}
-            </a>
-          ))}
-          <a href="#contact" className="bg-secondary text-primary px-6 py-2.5 text-xs font-black uppercase tracking-widest hover:brightness-110 transition-all rounded-full">
-            Shop Now
+    <main className="bg-primary text-accent selection:bg-secondary selection:text-primary">
+      {/* NAVIGATION */}
+      <nav className={`fixed w-full z-50 transition-all duration-500 ${scrolled ? 'py-4 bg-primary/95 backdrop-blur-xl border-b border-white/5' : 'py-8 bg-transparent'}`}>
+        <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
+          <a href="#" className="group flex items-center gap-3">
+            <div className="w-10 h-10 border border-secondary flex items-center justify-center rounded-lg group-hover:bg-secondary transition-all">
+              <span className="text-secondary group-hover:text-primary font-heading font-bold text-xl">S</span>
+            </div>
+            <span className="font-heading text-2xl font-bold tracking-tight hidden sm:block">SHANTEL</span>
           </a>
-        </div>
 
-        <button className="md:hidden text-white" onClick={() => setIsOpen(true)}>
-          <Menu size={28} />
-        </button>
-      </div>
-
-      {/* Mobile Nav */}
-      <div className={`fixed inset-0 bg-primary z-[200] transition-transform duration-500 transform ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}>
-        <div className="p-8 flex flex-col h-full">
-          <div className="flex justify-between items-center mb-16">
-            <div className="w-10 h-10 border-2 border-secondary flex items-center justify-center font-heading font-black text-secondary">S</div>
-            <button onClick={() => setIsOpen(false)}><X size={32} /></button>
-          </div>
-          <div className="flex flex-col gap-8">
-            {navLinks.map((link: any) => (
-              <a 
-                key={link.name} 
-                href={link.href} 
-                onClick={() => setIsOpen(false)}
-                className="text-4xl font-heading font-bold hover:text-secondary transition-colors"
-              >
-                {link.name}
+          <div className="hidden md:flex items-center gap-10">
+            {['Home', 'Shop', 'About', 'Contact'].map(link => (
+              <a key={link} href={`#${link.toLowerCase()}`} className="text-sm font-medium uppercase tracking-[0.2em] text-white/60 hover:text-secondary transition-colors">
+                {link}
               </a>
             ))}
           </div>
-          <div className="mt-auto pb-10">
-            <p className="text-white/40 text-sm uppercase tracking-widest mb-6">Connect</p>
-            <div className="flex gap-6">
-              <Instagram className="text-secondary" />
-              <Phone className="text-secondary" />
+
+          <div className="flex items-center gap-4">
+            <a href="#contact" className="hidden sm:block bg-secondary text-primary px-6 py-2.5 rounded-full font-bold text-sm hover:brightness-110 transition-all">
+              Shop Now
+            </a>
+            <button onClick={() => setMobileMenu(true)} className="md:hidden text-white">
+              <Menu size={24} />
+            </button>
+          </div>
+        </div>
+      </nav>
+
+      {/* MOBILE SIDEBAR */}
+      <div className={`fixed inset-0 z-[60] transition-transform duration-500 ${mobileMenu ? 'translate-x-0' : 'translate-x-full'}`}>
+        <div className="absolute inset-0 bg-primary/80 backdrop-blur-sm" onClick={() => setMobileMenu(false)} />
+        <div className="absolute right-0 top-0 h-full w-[80%] max-w-sm bg-primary border-l border-white/10 p-10 flex flex-col">
+          <button onClick={() => setMobileMenu(false)} className="self-end mb-12 text-white">
+            <X size={32} />
+          </button>
+          <div className="space-y-8">
+            {['Home', 'Shop', 'About', 'Contact'].map(link => (
+              <a key={link} onClick={() => setMobileMenu(false)} href={`#${link.toLowerCase()}`} className="block font-heading text-4xl font-bold text-white hover:text-secondary transition-colors">
+                {link}
+              </a>
+            ))}
+          </div>
+          <div className="mt-auto pt-12 border-t border-white/10">
+            <p className="text-white/40 text-xs uppercase tracking-widest mb-4">Gwarimpa, Abuja</p>
+            <p className="text-white/60 text-sm leading-relaxed">{brief.contact.address}</p>
+          </div>
+        </div>
+      </div>
+
+      {/* HERO SECTION (HR-C) */}
+      <section id="home" className="min-h-screen grid md:grid-cols-[1fr_1fr] items-stretch bg-primary overflow-hidden">
+        <div className="flex flex-col justify-center px-8 md:px-16 pt-32 pb-16">
+          <div className="animate-fadeIn">
+            <p className="text-secondary font-mono text-xs tracking-[0.4em] uppercase mb-6 opacity-70">
+              {brief.brand.industry} — Abuja
+            </p>
+            <h1 className="font-heading text-5xl md:text-[5rem] font-bold text-white leading-[0.95] tracking-tighter">
+              Elevate Your <span className="text-secondary">Signature</span> Style
+            </h1>
+            <p className="text-white/45 mt-8 text-lg max-w-md leading-relaxed font-light">
+              {brief.brand.description} Curated for the modern woman who values excellence.
+            </p>
+            <div className="flex gap-6 mt-12 flex-wrap">
+              <a href="#products" className="bg-secondary text-primary px-10 py-4 font-bold rounded-full hover:scale-105 transition-all shadow-xl shadow-secondary/10">
+                Shop the Collection
+              </a>
+              <a href="#about" className="border border-white/20 text-white px-10 py-4 font-medium rounded-full hover:bg-white/5 transition-all">
+                The Story
+              </a>
+            </div>
+            <div className="mt-20 flex gap-10 border-t border-white/10 pt-10">
+              {brief.stats.slice(0, 2).map((s, i) => (
+                <div key={i} className="group cursor-default">
+                  <p className="font-heading text-4xl font-bold text-white group-hover:text-secondary transition-colors">{s.number}</p>
+                  <p className="text-white/40 text-xs uppercase tracking-widest mt-1">{s.label}</p>
+                </div>
+              ))}
             </div>
           </div>
         </div>
-      </div>
-    </nav>
-  );
-};
-
-const SectionDivider = ({ brand }: { brand: any }) => (
-  <div className="py-16 flex items-center gap-8 px-8 max-w-6xl mx-auto opacity-50">
-    <div className="flex-1 h-px bg-gradient-to-r from-transparent via-secondary/40 to-transparent" />
-    <span className="text-secondary font-sans text-[10px] tracking-[0.5em] uppercase whitespace-nowrap">
-      {brand.tagline}
-    </span>
-    <div className="flex-1 h-px bg-gradient-to-r from-transparent via-secondary/40 to-transparent" />
-  </div>
-);
-
-// --- Sections ---
-
-const Hero = ({ brand, hero, heroImage }: any) => {
-  const { ref, isVisible } = useScrollReveal();
-  return (
-    <section id="hero" ref={ref} className="min-h-screen relative flex items-center justify-center bg-primary px-6 overflow-hidden">
-      <div className="absolute top-1/4 left-1/4 w-[32rem] h-[32rem] bg-secondary/10 rounded-full blur-[120px] pointer-events-none animate-float" />
-      <div className="absolute bottom-1/4 right-1/3 w-64 h-64 bg-secondary/5 rounded-full blur-[80px] pointer-events-none" />
-      
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full opacity-20 max-w-5xl max-h-[70vh] rounded-[4rem] overflow-hidden rotate-2 border border-white/5">
-        <SafeImage src={heroImage.url} alt={brand.name} fill className="object-cover" priority />
-      </div>
-
-      <div className="relative z-10 text-center max-w-5xl">
-        <h1 className={`font-heading text-6xl md:text-[7.5rem] font-black text-white leading-[0.9] tracking-tighter transition-all duration-1000 ${
-          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
-        }`}>
-          {hero.headline}
-        </h1>
-        <p className={`text-white/50 mt-10 text-xl md:text-2xl max-w-2xl mx-auto font-light leading-relaxed transition-all duration-1000 delay-300 ${
-          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
-        }`}>
-          {hero.subtext}
-        </p>
-        <div className={`flex flex-col sm:flex-row gap-6 justify-center mt-12 transition-all duration-1000 delay-500 ${
-          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
-        }`}>
-          <a href="#products" className="bg-secondary text-primary px-12 py-5 font-black text-sm uppercase tracking-widest hover:scale-105 transition-all duration-300 rounded-full">
-            {hero.cta_text}
-          </a>
-          <a href="#about" className="border border-white/20 text-white px-12 py-5 font-bold text-sm uppercase tracking-widest hover:bg-white/5 transition-all duration-300 rounded-full">
-            The Story
-          </a>
+        <div className="relative min-h-[50vh] md:min-h-full overflow-hidden">
+          <SafeImage src="https://images.unsplash.com/photo-1593528625646-d705402054ba?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080" alt="High Fashion Model" fill className="object-cover animate-scaleIn" priority />
+          <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary/20 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-primary/60 via-transparent to-transparent" />
         </div>
-      </div>
-    </section>
-  );
-};
+      </section>
 
-const Features = ({ section, features }: any) => {
-  const { ref, isVisible } = useScrollReveal();
-  const iconMap: any = { Truck, ShieldCheck, Sparkles };
-
-  return (
-    <section id="features" ref={ref} className="py-28 bg-primary px-6 relative overflow-hidden">
-      <div className="max-w-7xl mx-auto">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-6">
-          <div>
-            <h2 className="font-heading text-5xl md:text-7xl font-black text-white">{section.title}</h2>
-            <p className="text-secondary font-sans text-sm tracking-[0.3em] uppercase mt-4">{section.subtitle}</p>
+      {/* FEATURES SECTION (F-ICON-GRID) */}
+      <section id="features" className="py-28 px-6 bg-secondary/5 relative">
+        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] pointer-events-none" />
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-20">
+            <h2 className="font-heading text-5xl font-bold text-white mb-4">The Shantel Experience</h2>
+            <div className="w-24 h-1 bg-secondary mx-auto rounded-full" />
           </div>
-          <div className="hidden md:block w-32 h-px bg-white/20 mb-4" />
-        </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {features.map((f: any, i: number) => {
-            const Icon = iconMap[f.icon] || Sparkles;
-            return (
-              <div 
-                key={i} 
-                className={`bg-[#111111] p-10 rounded-3xl border border-white/5 hover:border-secondary/20 transition-all duration-500 group transition-all ${
-                  isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-                }`}
-                style={{ transitionDelay: `${i * 150}ms` }}
-              >
-                <div className="w-14 h-14 bg-secondary/10 flex items-center justify-center rounded-2xl mb-8 group-hover:bg-secondary group-hover:text-primary transition-all duration-300">
-                  <Icon size={28} />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {brief.features.map((f, i) => {
+              const Icon = f.icon;
+              const { ref, isVisible } = useScrollReveal();
+              return (
+                <div key={i} ref={ref as any} 
+                  className={`p-10 rounded-3xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.05] hover:border-secondary/20 transition-all duration-500 group relative overflow-hidden ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}
+                  style={{ transitionDelay: `${i * 150}ms` }}>
+                  <div className="absolute -top-10 -right-10 w-32 h-32 bg-secondary/5 rounded-full blur-3xl group-hover:bg-secondary/10 transition-all" />
+                  <div className="w-14 h-14 rounded-2xl bg-secondary/15 flex items-center justify-center mb-8 text-secondary group-hover:scale-110 group-hover:bg-secondary group-hover:text-primary transition-all duration-500">
+                    <Icon size={28} />
+                  </div>
+                  <h3 className="font-heading text-2xl font-bold text-white mb-4">{f.title}</h3>
+                  <p className="text-white/40 leading-relaxed font-light">{f.description}</p>
                 </div>
-                <h3 className="font-heading text-3xl font-bold text-white mb-4">{f.title}</h3>
-                <p className="text-white/40 leading-relaxed">{f.description}</p>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* PRODUCTS SECTION (P-STAGGER) */}
+      <section id="shop" className="py-28 px-6 bg-primary overflow-hidden">
+        <div className="max-w-6xl mx-auto space-y-32">
+          <div className="text-center max-w-2xl mx-auto">
+            <h2 className="font-heading text-6xl font-bold text-white leading-tight">New <span className="italic text-secondary">Arrivals</span></h2>
+            <p className="text-white/40 mt-4 text-lg">Sharp delivery, nationwide. Explore our latest luxury drops.</p>
+          </div>
+          {brief.products.map((p, i) => {
+            const { ref, isVisible } = useScrollReveal();
+            return (
+              <div key={i} ref={ref as any} className={`flex flex-col ${i % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'} items-center gap-12 md:gap-24 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'}`}>
+                <div className="w-full md:w-1/2 relative">
+                  <div className="aspect-[4/5] relative rounded-2xl overflow-hidden shadow-2xl group cursor-zoom-in">
+                    <SafeImage src={p.image} alt={p.name} fill className="object-cover group-hover:scale-110 transition-transform duration-1000" />
+                    <div className="absolute inset-0 bg-primary/20 group-hover:bg-transparent transition-all" />
+                  </div>
+                  <div className={`absolute -bottom-8 ${i % 2 === 0 ? '-right-8' : '-left-8'} w-1/2 h-1/2 bg-secondary/10 rounded-full blur-3xl -z-10`} />
+                </div>
+                <div className={`w-full md:w-1/2 ${i % 2 === 0 ? 'text-left' : 'md:text-right'}`}>
+                  <span className="font-mono text-secondary text-xs font-bold tracking-[0.4em] uppercase mb-4 block opacity-60">
+                    Collection — 0{i + 1}
+                  </span>
+                  <h3 className="font-heading text-4xl md:text-5xl font-bold text-white leading-tight mb-6">{p.name}</h3>
+                  <p className="text-white/50 text-lg leading-relaxed font-light mb-8 max-w-md ml-auto mr-auto md:ml-0 md:mr-0">{p.description}</p>
+                  <div className={`flex flex-col gap-6 ${i % 2 === 0 ? 'items-start' : 'items-start md:items-end'}`}>
+                    <span className="text-4xl font-bold text-white tracking-tight">{p.price}</span>
+                    <a href="#contact" className="bg-white text-primary px-10 py-4 rounded-full font-bold hover:bg-secondary hover:text-primary transition-all flex items-center gap-3">
+                      Enquire Now <ArrowRight size={18} />
+                    </a>
+                  </div>
+                </div>
               </div>
             );
           })}
         </div>
-      </div>
-    </section>
-  );
-};
+      </section>
 
-const Products = ({ section, products }: any) => {
-  const { ref, isVisible } = useScrollReveal();
-  return (
-    <section id="products" ref={ref} className="py-28 px-6 bg-primary">
-      <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-24">
-          <h2 className="font-heading text-6xl md:text-8xl font-black text-white tracking-tighter italic">
-            Lookbook
-          </h2>
-          <p className="text-white/30 text-sm tracking-[0.5em] uppercase mt-4">Curated Style Picks</p>
-        </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {products.map((p: any, i: number) => (
-            <div 
-              key={i} 
-              className={`group transition-all duration-700 ${isVisible ? 'scale-100 opacity-100' : 'scale-90 opacity-0'}`}
-              style={{ transitionDelay: `${i * 100}ms` }}
-            >
-              <div className="relative aspect-[3/4] rounded-3xl overflow-hidden mb-6">
-                <SafeImage src={p.image_url} alt={p.name} fill className="object-cover transition-transform duration-700 group-hover:scale-110" />
-                <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors" />
-                <div className="absolute bottom-6 right-6">
-                  <div className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all">
-                    <ShoppingBag size={20} />
+      {/* DIVIDER: D-QUOTE */}
+      <div className="py-32 px-8 text-center bg-secondary/[0.03] border-y border-white/5 relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,var(--secondary)/5,transparent_70%)]" />
+        <p className="relative font-heading text-4xl md:text-6xl font-bold text-white max-w-4xl mx-auto leading-tight italic">
+          &ldquo;Fashion is the armor to survive the reality of everyday life.&rdquo;
+        </p>
+        <p className="relative text-secondary mt-8 text-sm tracking-[0.5em] uppercase font-bold">{brief.brand.name}</p>
+      </div>
+
+      {/* GALLERY SECTION (MASONRY) */}
+      <section className="py-28 px-6 bg-primary">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="font-heading text-5xl font-bold text-white mb-16 text-center">Editorial <span className="text-secondary">Lookbook</span></h2>
+          <div className="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
+            {brief.gallery.map((src, i) => {
+              const { ref, isVisible } = useScrollReveal();
+              return (
+                <div key={i} ref={ref as any} className={`break-inside-avoid group relative rounded-2xl overflow-hidden transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-10 scale-95'}`} style={{ transitionDelay: `${i * 100}ms` }}>
+                  <SafeImage src={src} alt={`Gallery Piece ${i + 1}`} width={600} height={800} className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-1000 grayscale hover:grayscale-0" />
+                  <div className="absolute inset-0 bg-secondary/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-8">
+                    <span className="text-primary font-bold uppercase tracking-widest text-xs bg-accent px-4 py-2 rounded-full">View Details</span>
                   </div>
                 </div>
-              </div>
-              <div className="px-2">
-                <h3 className="font-heading text-xl font-bold text-white">{p.name}</h3>
-                <div className="flex justify-between items-center mt-2">
-                  <p className="text-secondary font-black text-lg">{p.price}</p>
-                  <span className="text-[10px] text-white/30 uppercase tracking-widest">Abuja Stock</span>
-                </div>
-              </div>
-            </div>
-          ))}
+              );
+            })}
+          </div>
         </div>
-      </div>
-    </section>
-  );
-};
+      </section>
 
-const About = ({ section, brand }: any) => {
-  const { ref, isVisible } = useScrollReveal();
-  return (
-    <section id="about" ref={ref} className="py-28 px-6 bg-[#0D0D0D] overflow-hidden">
-      <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-20 items-center">
-        <div className={`transition-all duration-1000 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-20'}`}>
+      {/* ABOUT SECTION (V3: Horizontal Split) */}
+      <section id="about" className="py-28 bg-white/[0.02] border-y border-white/5 relative overflow-hidden">
+        <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-20 items-center">
           <div className="relative">
-            <div className="aspect-square relative rounded-[4rem] overflow-hidden border border-white/10 z-10 shadow-2xl">
-              <SafeImage src="https://images.unsplash.com/photo-1526745925052-dd824d27b9ab" alt="Showroom" fill className="object-cover" />
+            <div className="aspect-[4/5] relative rounded-[3rem] overflow-hidden z-10 shadow-2xl">
+              <SafeImage src="https://images.unsplash.com/photo-1618236444721-4a8dba415c15?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080" alt="Boutique Interior" fill className="object-cover" />
             </div>
-            <div className="absolute -bottom-10 -right-10 w-64 h-64 bg-secondary/20 rounded-full blur-[80px] -z-10" />
-            <div className="absolute -top-10 -left-10 w-64 h-64 bg-white/5 rounded-full blur-[80px] -z-10" />
-          </div>
-        </div>
-        
-        <div className={`transition-all duration-1000 delay-300 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'}`}>
-          <h2 className="font-heading text-5xl font-black text-white mb-8 leading-tight">
-            {section.title}
-          </h2>
-          <p className="text-white/60 text-lg leading-relaxed mb-12">
-            {section.description}
-          </p>
-          <div className="grid grid-cols-2 gap-8">
-            {section.stats.map((s: any, i: number) => (
-              <div key={i} className="space-y-1">
-                <p className="font-heading text-4xl font-black text-secondary">{s.number}</p>
-                <p className="text-white/40 text-xs uppercase tracking-[0.2em]">{s.label}</p>
-              </div>
-            ))}
-          </div>
-          <div className="mt-12 p-6 rounded-2xl bg-white/5 border-l-4 border-secondary">
-             <p className="text-white/80 italic font-light">"Best fashion plug in Abuja, sharp delivery nationwide."</p>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-};
-
-const GalleryMasonry = ({ section, images }: any) => {
-  const { ref, isVisible } = useScrollReveal();
-  return (
-    <section ref={ref} className="py-28 px-6 bg-primary">
-      <div className="max-w-7xl mx-auto">
-        <div className="flex flex-col items-center mb-20 text-center">
-           <h2 className="font-heading text-5xl md:text-6xl font-black text-white mb-4 italic">{section.title}</h2>
-           <div className="w-16 h-px bg-secondary" />
-        </div>
-        <div className={`columns-1 sm:columns-2 lg:columns-3 gap-4 space-y-4 transition-all duration-1000 ease-out overflow-hidden ${isVisible ? 'max-w-full opacity-100' : 'max-w-0 opacity-0'}`}>
-          {images.slice(0, 6).map((img: any, i: number) => (
-            <div key={i} className="break-inside-avoid group relative rounded-3xl overflow-hidden border border-white/5 shadow-xl">
-              <SafeImage src={img.url} alt={`Gallery ${i}`} className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-700" />
-              <div className="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                 <div className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white">
-                    <BadgeCheck size={20} className="text-secondary" />
-                 </div>
-              </div>
+            <div className="absolute -top-12 -left-12 w-64 h-64 border border-secondary/20 rounded-[3rem] -z-0" />
+            <div className="absolute -bottom-10 -right-10 w-32 h-32 bg-secondary rounded-[2rem] flex items-center justify-center z-20 shadow-2xl animate-float">
+              <ShoppingBag size={48} className="text-primary" />
             </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-};
-
-const Testimonials = ({ section }: any) => {
-  const { ref, isVisible } = useScrollReveal();
-  return (
-    <section ref={ref} className="py-28 bg-[#0D0D0D] px-6">
-      <div className="max-w-7xl mx-auto">
-        <h2 className="font-heading text-5xl font-black text-white mb-20">The Style Report</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {section.items.map((t: any, i: number) => (
-            <div 
-              key={i} 
-              style={{ transitionDelay: `${i * 100}ms` }}
-              className={`bg-primary p-10 rounded-3xl border border-white/5 relative transition-all duration-700 ${
-                isVisible ? 'opacity-100 translate-y-0 blur-0' : 'opacity-0 translate-y-6 blur-sm'
-              }`}
-            >
-              <div className="absolute -top-4 left-10">
-                <div className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center text-primary">
-                  <Sparkles size={16} />
+          </div>
+          <div>
+            <h2 className="font-heading text-5xl font-bold text-white mb-8">Redefining <span className="text-secondary italic">Style</span> in Abuja</h2>
+            <div className="space-y-6 text-white/50 text-lg leading-relaxed font-light">
+              <p>Located in the heart of Gwarimpa, Shantel Fashion World is more than a boutique; it&apos;s a destination for style. We bridge the gap between affordable luxury and high-end designer pieces.</p>
+              <p>Our mission is simple: to ensure every woman feels powerful, elegant, and confident in what she wears. From the stitching of our silk gowns to the hardware on our bags, quality is never compromised.</p>
+            </div>
+            <div className="grid grid-cols-3 gap-6 mt-12">
+              {brief.stats.map((s, i) => (
+                <div key={i} className="text-center">
+                  <p className="font-heading text-3xl font-bold text-secondary mb-1">{s.number}</p>
+                  <p className="text-white/40 text-[10px] uppercase tracking-widest">{s.label}</p>
                 </div>
-              </div>
-              <p className="text-white/70 leading-relaxed italic mb-8 pt-4">"{t.text}"</p>
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-full bg-zinc-800 flex items-center justify-center font-bold text-secondary border border-white/10">
-                  {t.name.charAt(0)}
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* TESTIMONIALS SECTION (T-MASONRY) */}
+      <section className="py-28 px-6 bg-primary">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-20">
+            <h2 className="font-heading text-5xl font-bold text-white">Client <span className="italic text-secondary">Stories</span></h2>
+          </div>
+          <div className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
+            {brief.testimonials.map((t, i) => {
+              const { ref, isVisible } = useScrollReveal();
+              return (
+                <div key={i} ref={ref as any} className={`break-inside-avoid bg-white/[0.03] border border-white/5 p-10 rounded-[2rem] transition-all duration-700 hover:border-secondary/20 group ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`} style={{ transitionDelay: `${i * 150}ms` }}>
+                  <div className="flex gap-1 mb-6">
+                    {[1,2,3,4,5].map(n => <Star key={n} size={14} className="fill-secondary text-secondary" />)}
+                  </div>
+                  <p className="text-white/70 text-lg leading-relaxed italic mb-8">&ldquo;{t.text}&rdquo;</p>
+                  <div className="flex items-center gap-4 border-t border-white/10 pt-6">
+                    <div className="w-12 h-12 rounded-full bg-secondary/10 flex items-center justify-center text-secondary font-bold text-lg border border-secondary/20">
+                      {t.name.charAt(0)}
+                    </div>
+                    <div>
+                      <p className="font-heading font-bold text-white text-lg">{t.name}</p>
+                      <p className="text-secondary/60 text-xs font-mono uppercase tracking-widest">{t.role}</p>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* CONTACT SECTION (C2: Asymmetric Glass Overlap) */}
+      <section id="contact" className="py-28 px-6 bg-primary relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-1/2 h-full bg-secondary/5 -skew-x-12 translate-x-24 pointer-events-none" />
+        <div className="max-w-7xl mx-auto relative z-10 grid md:grid-cols-2 gap-20 items-center">
+          <ContactForm />
+          <div className="md:pl-12">
+            <h2 className="font-heading text-6xl md:text-7xl font-bold text-white mb-10 leading-tight">Visit Our <span className="text-secondary">Boutique</span></h2>
+            <div className="space-y-8">
+              <div className="flex items-start gap-6 group">
+                <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center text-secondary group-hover:bg-secondary group-hover:text-primary transition-all shrink-0">
+                  <MapPin size={24} />
                 </div>
                 <div>
-                  <p className="font-bold text-white text-sm">{t.name}</p>
-                  <p className="text-secondary text-[10px] uppercase tracking-widest font-bold">{t.role}</p>
+                  <h4 className="font-heading text-xl font-bold text-white mb-2">Location</h4>
+                  <p className="text-white/40 leading-relaxed max-w-xs">{brief.contact.address}</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-6 group">
+                <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center text-secondary group-hover:bg-secondary group-hover:text-primary transition-all shrink-0">
+                  <Phone size={24} />
+                </div>
+                <div>
+                  <h4 className="font-heading text-xl font-bold text-white mb-2">WhatsApp</h4>
+                  <p className="text-white/40 leading-relaxed">+{brief.contact.whatsapp}</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-6 group">
+                <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center text-secondary group-hover:bg-secondary group-hover:text-primary transition-all shrink-0">
+                  <Instagram size={24} />
+                </div>
+                <div>
+                  <h4 className="font-heading text-xl font-bold text-white mb-2">Instagram</h4>
+                  <p className="text-white/40 leading-relaxed">{brief.contact.instagram}</p>
                 </div>
               </div>
             </div>
-          ))}
+          </div>
         </div>
-      </div>
-    </section>
-  );
-};
+      </section>
 
-const ContactForm = ({ brand, contact, section }: any) => {
-  const { ref, isVisible } = useScrollReveal();
+      {/* FOOTER */}
+      <footer className="bg-primary pt-24 pb-12 border-t border-white/5 px-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-16 mb-20">
+            <div className="md:col-span-2">
+              <a href="#" className="flex items-center gap-3 mb-8">
+                <div className="w-10 h-10 border border-secondary flex items-center justify-center rounded-lg">
+                  <span className="text-secondary font-heading font-bold text-xl">S</span>
+                </div>
+                <span className="font-heading text-2xl font-bold tracking-tight">SHANTEL</span>
+              </a>
+              <p className="text-white/40 max-w-sm text-lg font-light leading-relaxed mb-10">
+                {brief.brand.tagline}. Redefining luxury fashion for the modern era. Sharp delivery, nationwide.
+              </p>
+              <div className="flex gap-4">
+                <a href={`https://wa.me/${brief.contact.whatsapp}`} className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center text-white/40 hover:text-secondary hover:border-secondary transition-all">
+                  <Phone size={20} />
+                </a>
+                <a href="#" className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center text-white/40 hover:text-secondary hover:border-secondary transition-all">
+                  <Instagram size={20} />
+                </a>
+              </div>
+            </div>
+            <div>
+              <h4 className="font-heading text-xl font-bold text-white mb-8">Navigation</h4>
+              <ul className="space-y-4">
+                {['Home', 'Shop', 'About', 'Contact'].map(link => (
+                  <li key={link}><a href={`#${link.toLowerCase()}`} className="text-white/40 hover:text-secondary transition-colors text-sm uppercase tracking-widest">{link}</a></li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-heading text-xl font-bold text-white mb-8">Boutique Hours</h4>
+              <ul className="space-y-4 text-sm text-white/40">
+                <li className="flex justify-between"><span>Mon - Sat</span> <span>09:00 - 19:00</span></li>
+                <li className="flex justify-between"><span>Sun</span> <span>By Appointment</span></li>
+              </ul>
+            </div>
+          </div>
+          <div className="pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
+            <p className="text-white/20 text-xs tracking-widest">
+              &copy; {new Date().getFullYear()} SHANTEL FASHION WORLD. ALL RIGHTS RESERVED.
+            </p>
+            <div className="flex gap-8 text-[10px] text-white/20 tracking-[0.2em] uppercase">
+              <a href="#" className="hover:text-secondary transition-colors">Privacy Policy</a>
+              <a href="#" className="hover:text-secondary transition-colors">Terms of Service</a>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </main>
+  );
+}
+
+function ContactForm() {
   const [form, setForm] = useState({ name: '', email: '', phone: '', message: '' });
   const [sent, setSent] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -376,216 +479,60 @@ const ContactForm = ({ brand, contact, section }: any) => {
     setTimeout(() => { setLoading(false); setSent(true); }, 1500);
   };
 
+  if (sent) {
+    return (
+      <div className="flex flex-col items-center justify-center p-16 text-center animate-scaleIn bg-white/[0.02] rounded-[3rem] border border-white/10 shadow-2xl relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-secondary/10 to-transparent opacity-50" />
+        <div className="w-24 h-24 rounded-full bg-secondary/20 flex items-center justify-center mb-8 border border-secondary/40 relative z-10">
+          <CheckCheck size={40} className="text-secondary" />
+        </div>
+        <h3 className="font-heading text-4xl font-bold text-white mb-4 relative z-10">Thank You</h3>
+        <p className="text-white/40 max-w-sm text-lg relative z-10 leading-relaxed font-light">We have received your message. Our stylist will get in touch with you shortly.</p>
+        <button onClick={() => setSent(false)} className="mt-10 text-secondary font-bold underline underline-offset-4 relative z-10">Send another message</button>
+      </div>
+    );
+  }
+
   return (
-    <section id="contact" ref={ref} className="py-28 px-6 bg-primary overflow-hidden">
-      <div className="max-w-7xl mx-auto grid md:grid-cols-[1fr_1.4fr] gap-16 items-start">
-        <div className={`transition-all duration-700 ${isVisible ? 'opacity-100 skew-y-0 translate-y-0' : 'opacity-0 skew-y-2 translate-y-8'}`}>
-          <h2 className="font-heading text-5xl md:text-7xl font-black text-white mb-6 tracking-tighter">{section.title}</h2>
-          <p className="text-white/45 text-lg leading-relaxed max-w-sm mb-12">{brand.description}</p>
-          
-          <div className="space-y-6">
-            <a href={`https://${contact.whatsapp}`} className="flex items-center gap-4 text-white/60 hover:text-secondary transition-all group">
-              <div className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center group-hover:border-secondary transition-colors">
-                <Phone size={18} />
-              </div>
-              <span className="text-sm tracking-widest font-medium uppercase">{contact.whatsapp.replace('wa.me/c/', '')}</span>
-            </a>
-            <div className="flex items-center gap-4 text-white/60 group">
-              <div className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center">
-                <Instagram size={18} />
-              </div>
-              <span className="text-sm tracking-widest font-medium uppercase">@{contact.instagram}</span>
+    <form onSubmit={handleSubmit} className="space-y-4 bg-primary/40 backdrop-blur-3xl p-10 sm:p-14 rounded-[3rem] border border-white/10 shadow-2xl relative overflow-hidden group">
+      <div className="absolute top-0 right-0 w-64 h-64 bg-secondary/10 blur-[100px] rounded-full pointer-events-none group-hover:bg-secondary/15 transition-all duration-700" />
+      <div className="relative z-10">
+        <h3 className="font-heading text-3xl font-bold text-white mb-10">Send an <span className="text-secondary">Inquiry</span></h3>
+        <div className="space-y-5">
+          {(['name', 'email', 'phone'] as const).map(field => (
+            <div key={field} className="relative">
+              <input
+                type={field === 'email' ? 'email' : 'text'}
+                placeholder={field.charAt(0).toUpperCase() + field.slice(1)}
+                value={form[field]}
+                onChange={e => setForm(prev => ({ ...prev, [field]: e.target.value }))}
+                required={field !== 'phone'}
+                className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-5 text-white placeholder-white/20 text-sm outline-none transition-all duration-300 focus:bg-white/10 focus:border-secondary focus:ring-1 focus:ring-secondary/30"
+              />
             </div>
-            <div className="flex items-start gap-4 text-white/60">
-              <div className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center shrink-0">
-                <MapPin size={18} />
-              </div>
-              <span className="text-sm leading-relaxed max-w-xs">{contact.address}</span>
-            </div>
+          ))}
+          <div className="relative">
+            <textarea rows={4} placeholder="Your message or product interest..."
+              value={form.message}
+              onChange={e => setForm(prev => ({ ...prev, message: e.target.value }))}
+              required
+              className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-5 text-white placeholder-white/20 text-sm outline-none resize-none transition-all duration-300 focus:bg-white/10 focus:border-secondary focus:ring-1 focus:ring-secondary/30"
+            />
           </div>
         </div>
-
-        <div className="relative">
-          <div className="absolute -top-20 -right-20 w-96 h-96 bg-secondary/10 rounded-full blur-[100px] pointer-events-none" />
-          
-          {sent ? (
-            <div className="bg-[#111111] p-12 rounded-[2rem] border border-white/10 text-center animate-scaleIn relative z-10 shadow-2xl">
-              <div className="w-20 h-20 rounded-full bg-secondary/10 flex items-center justify-center mx-auto mb-8 border border-secondary/20">
-                <CheckCheck className="text-secondary" size={40} />
-              </div>
-              <h3 className="font-heading text-4xl font-black text-white mb-4">Request Sent</h3>
-              <p className="text-white/50 max-w-xs mx-auto">We'll review your inquiry and get back to you shortly. Get ready to level up your style.</p>
-            </div>
+        <button type="submit" disabled={loading}
+          className="w-full mt-10 bg-secondary text-primary py-5 rounded-2xl font-bold text-lg hover:brightness-110 hover:shadow-[0_0_30px_rgba(197,160,89,0.3)] transition-all duration-500 disabled:opacity-60 flex justify-center items-center gap-3">
+          {loading ? (
+            <span className="flex items-center gap-2">
+              <Loader2 className="animate-spin" size={20} /> Processing...
+            </span>
           ) : (
-            <form onSubmit={handleSubmit} className="space-y-4 bg-[#111111] p-10 md:p-12 rounded-[2rem] border border-white/5 shadow-2xl relative z-10">
-              <h3 className="font-heading text-3xl font-bold text-white mb-10">Book an Appointment</h3>
-              <div className="space-y-4">
-                <input
-                  type="text"
-                  placeholder="Full Name"
-                  required
-                  className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-5 text-white placeholder-white/30 text-sm outline-none focus:border-secondary focus:ring-1 focus:ring-secondary transition-all"
-                  value={form.name}
-                  onChange={e => setForm({...form, name: e.target.value})}
-                />
-                <input
-                  type="text"
-                  placeholder="Phone Number"
-                  required
-                  className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-5 text-white placeholder-white/30 text-sm outline-none focus:border-secondary focus:ring-1 focus:ring-secondary transition-all"
-                  value={form.phone}
-                  onChange={e => setForm({...form, phone: e.target.value})}
-                />
-                <textarea
-                  rows={4}
-                  placeholder="What are you looking for?"
-                  required
-                  className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-5 text-white placeholder-white/30 text-sm outline-none resize-none focus:border-secondary focus:ring-1 focus:ring-secondary transition-all"
-                  value={form.message}
-                  onChange={e => setForm({...form, message: e.target.value})}
-                />
-              </div>
-              <button 
-                type="submit" 
-                disabled={loading}
-                className="w-full mt-8 bg-secondary text-primary py-5 rounded-2xl font-black text-sm uppercase tracking-[0.2em] hover:brightness-110 transition-all disabled:opacity-50 flex justify-center items-center gap-3 group"
-              >
-                {loading ? <Loader2 className="animate-spin" /> : <>Send Inquiry <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" /></>}
-              </button>
-            </form>
+            <>
+              Send Message <ArrowRight size={20} />
+            </>
           )}
-        </div>
+        </button>
       </div>
-    </section>
-  );
-};
-
-const Footer = ({ brand, contact }: any) => (
-  <footer className="bg-[#050505] pt-24 pb-12 px-6 border-t border-white/5">
-    <div className="max-w-7xl mx-auto">
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-16 mb-20">
-        <div className="md:col-span-2">
-          <div className="flex items-center gap-3 mb-8">
-            <div className="w-12 h-12 border-2 border-secondary flex items-center justify-center font-heading font-black text-secondary text-2xl">S</div>
-            <span className="font-heading text-2xl font-bold uppercase tracking-tighter">{brand.name}</span>
-          </div>
-          <p className="text-white/40 max-w-sm leading-relaxed mb-8">
-            Abuja's premier fashion house. Defining luxury through curated footwear and premium apparel.
-          </p>
-          <div className="flex gap-6">
-            <a href="#" className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-white/50 hover:text-secondary hover:border-secondary transition-all">
-              <Instagram size={20} />
-            </a>
-          </div>
-        </div>
-        
-        <div>
-          <p className="text-secondary font-bold uppercase tracking-widest text-xs mb-8">The Showroom</p>
-          <div className="space-y-4">
-            <p className="text-white/40 text-sm leading-relaxed">{contact.address}</p>
-            <p className="text-white/70 font-bold text-sm tracking-widest">{contact.whatsapp.replace('wa.me/c/', '')}</p>
-          </div>
-        </div>
-        
-        <div>
-          <p className="text-secondary font-bold uppercase tracking-widest text-xs mb-8">Hours</p>
-          <div className="space-y-2 text-sm text-white/40">
-            <p className="flex justify-between"><span>Mon - Sat</span> <span>09:00 - 19:00</span></p>
-            <p className="flex justify-between"><span>Sunday</span> <span>By Appointment</span></p>
-          </div>
-        </div>
-      </div>
-      
-      <div className="border-t border-white/5 pt-12 flex flex-col md:flex-row justify-between items-center gap-6">
-        <p className="text-white/30 text-xs font-medium uppercase tracking-widest">
-          &copy; {new Date().getFullYear()} Shantel Fashion World. All Rights Reserved.
-        </p>
-        <p className="text-white/20 text-[10px] uppercase tracking-[0.4em]">Curated by Design</p>
-      </div>
-    </div>
-  </footer>
-);
-
-export default function Page() {
-  const brief = {
-    brand: {
-      name: "Shantel Fashion World",
-      tagline: "Curated Luxury. Trending Style. Effortless Elegance.",
-      description: "The ultimate destination in Abuja for premium designer footwear, handbags, and contemporary fashion that defines your unique style.",
-      industry: "fashion"
-    },
-    hero: {
-      headline: "Step Into High Fashion",
-      subtext: "Exclusive collections of designer shoes, luxury bags, and trending apparel in the heart of Gwarimpa.",
-      cta_text: "Explore Lookbook"
-    },
-    contact: {
-      whatsapp: "wa.me/c/2347061200116",
-      instagram: "shantel_fashion_world",
-      address: "Soar plaza shop B308 1st Avenue Gwarimpa opposite FCMB bank, Abuja Nigeria"
-    }
-  };
-
-  const navLinks = [
-    { name: "Home", href: "#hero" },
-    { name: "Collection", href: "#products" },
-    { name: "About", href: "#about" },
-    { name: "Visit Us", href: "#contact" }
-  ];
-
-  const products = [
-    { name: "Quilted Leather Handbag", price: "₦120,000", image_url: "https://images.unsplash.com/photo-1548036328-c9fa89d128fa" },
-    { name: "Designer Stiletto Heels", price: "₦85,000", image_url: "https://images.unsplash.com/photo-1551489186-ccb95a1ea6a3" },
-    { name: "Urban Chic Sneakers", price: "₦65,000", image_url: "https://images.unsplash.com/photo-1580140485763-63776b9cba67" },
-    { name: "Evening Gala Gown", price: "₦150,000", image_url: "https://images.unsplash.com/photo-1603122630570-7fd434d470d0" }
-  ];
-
-  const features = [
-    { title: "Nationwide Delivery", description: "Safe and prompt doorstep shipping to every state across Nigeria.", icon: "Truck" },
-    { title: "Premium Quality", description: "Strictly curated designer pieces that guarantee luxury and longevity.", icon: "ShieldCheck" },
-    { title: "Personal Styling", description: "Expert fashion advice to help you curate your dream wardrobe.", icon: "Sparkles" }
-  ];
-
-  const aboutSection = {
-    title: "Modern Luxury Redefined",
-    description: "Shantel Fashion World is more than just a boutique; it's a statement. Located in Gwarimpa, we bridge the gap between global runway trends and the sophisticated style of the modern Nigerian woman.",
-    stats: [
-      { number: "3k+", label: "Style Seekers" },
-      { number: "5+", label: "Years of Fashion" },
-      { number: "100%", label: "Curated Auth" },
-      { number: "24h", label: "Abuja Delivery" }
-    ]
-  };
-
-  const images = [
-    { url: "https://images.unsplash.com/photo-1767458770505-4daf3e3a3f77" },
-    { url: "https://images.unsplash.com/photo-1682364853446-db043f643207" },
-    { url: "https://images.unsplash.com/photo-1722872098827-e3a04d1b49ee" },
-    { url: "https://images.unsplash.com/photo-1617229378071-daa5eeff0db7" },
-    { url: "https://images.unsplash.com/photo-1526745925052-dd824d27b9ab" },
-    { url: "https://images.unsplash.com/photo-1737796348338-22e996496d8d" }
-  ];
-
-  const testimonialSection = {
-    items: [
-      { name: "Chiamaka Okafor", text: "The quality of the bags is unmatched. I get compliments every time I step out!", role: "Loyal Customer" },
-      { name: "Oluwatobi Adeyemi", text: "Best fashion plug in Abuja. They always have the latest designer shoes before anyone else.", role: "Style Enthusiast" },
-      { name: "Fatima Bello", text: "Fast delivery to Lagos and the packaging was so premium. Highly recommended!", role: "Entrepreneur" }
-    ]
-  };
-
-  return (
-    <main className="relative overflow-x-hidden">
-      <Navbar brand={brief.brand} navLinks={navLinks} />
-      <Hero brand={brief.brand} hero={brief.hero} heroImage={{ url: "https://images.unsplash.com/photo-1780679024697-a18a3484c117" }} />
-      <Features section={{ title: "The Standard", subtitle: "Curated Excellence" }} features={features} />
-      <SectionDivider brand={brief.brand} />
-      <Products section={{ title: "Lookbook" }} products={products} />
-      <About section={aboutSection} brand={brief.brand} />
-      <GalleryMasonry section={{ title: "The Showroom" }} images={images} />
-      <Testimonials section={testimonialSection} />
-      <ContactForm brand={brief.brand} contact={brief.contact} section={{ title: "Visit Us" }} />
-      <Footer brand={brief.brand} contact={brief.contact} />
-    </main>
+    </form>
   );
 }
