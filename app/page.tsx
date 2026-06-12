@@ -3,94 +3,32 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { 
-  ShoppingBag, 
   Menu, 
   X, 
   ArrowRight, 
-  Mail, 
+  ShoppingBag, 
+  Instagram, 
   Phone, 
   MapPin, 
-  Instagram, 
   Gem, 
   Truck, 
-  Sparkles, 
+  TrendingUp, 
   Users, 
   ShieldCheck, 
+  Mail, 
   CheckCheck, 
-  Loader2,
-  ImageOff
+  Loader2, 
+  ImageOff,
+  ChevronRight
 } from 'lucide-react';
 
 // DESIGN DECISIONS:
 // Layout Energy: editorial
-// Depth Treatment: glassmorphic
-// Divider Style: D-QUOTE
+// Depth Treatment: layered
+// Divider Style: D-RULE
 // Typography Personality: refined
 
-const brief = {
-  brand: {
-    name: "Shantel Fashion World",
-    tagline: "Step Into Pure Opulence",
-    description: "Abuja's premier destination for curated luxury bags, designer footwear, and trending editorial fashion for the modern elite.",
-    industry: "fashion",
-    region: "nigeria",
-    currency: "₦"
-  },
-  colors: {
-    primary: "#0A0A0A",
-    secondary: "#D4AF37",
-    accent: "#F5F5F5"
-  },
-  contact: {
-    whatsapp: "2347061200116",
-    instagram: "@shantel_fashion_world",
-    email: "",
-    address: "Soar plaza shop B308 1st Avenue Gwarimpa opposite FCMB bank, Abuja Nigeria"
-  },
-  heroImage: {
-    url: "https://images.unsplash.com/photo-1606132653399-36248f2e2a99?crop=entropy&cs=tinysrgb&fit=max&fm=jpg"
-  },
-  products: [
-    { name: "Signature Designer Tote", description: "Handcrafted leather tote with gold-tone hardware and spacious interior.", price: "₦245,000", url: "https://images.unsplash.com/photo-1761646238175-5d25cf3566f7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg" },
-    { name: "Italian Stiletto Heels", description: "Sleek pointed-toe pumps designed for ultimate comfort and statement style.", price: "₦185,000", url: "https://images.unsplash.com/photo-1629737168267-a9cc18033938?crop=entropy&cs=tinysrgb&fit=max&fm=jpg" },
-    { name: "Editorial Silk Gown", description: "Floor-length silk dress featuring a modern silhouette and premium finish.", price: "₦320,000", url: "https://images.unsplash.com/photo-1536524894612-c69d62c6f639?crop=entropy&cs=tinysrgb&fit=max&fm=jpg" },
-    { name: "Luxe Urban Sneakers", description: "High-fashion chunky sneakers blending street style with luxury materials.", price: "₦95,000", url: "https://images.unsplash.com/photo-1657242700848-68ea132c9966?crop=entropy&cs=tinysrgb&fit=max&fm=jpg" }
-  ],
-  features: [
-    { title: "Curated Luxury", description: "Every piece is hand-selected to ensure it meets our strict editorial standards.", icon: Gem },
-    { title: "Nationwide Delivery", description: "Sharp delivery, nationwide from our Gwarimpa hub to your doorstep.", icon: Truck },
-    { title: "Personal Styling", description: "Exclusive access to fashion consultants to help you build a timeless wardrobe.", icon: Sparkles }
-  ],
-  gallery: [
-    "https://images.unsplash.com/photo-1632905351666-9b11f8a64ee3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg",
-    "https://images.unsplash.com/photo-1629737168267-a9cc18033938?crop=entropy&cs=tinysrgb&fit=max&fm=jpg",
-    "https://images.unsplash.com/photo-1536524894612-c69d62c6f639?crop=entropy&cs=tinysrgb&fit=max&fm=jpg",
-    "https://images.unsplash.com/photo-1647412983566-1957e341807c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg",
-    "https://images.unsplash.com/photo-1746455783868-c8049bdb8f3a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg",
-    "https://images.unsplash.com/photo-1728488448472-16a259c6ba7c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg"
-  ]
-};
-
-function SafeImage({ src, alt, fill, width, height, className, priority, fallbackClassName }: {
-  src: string; alt: string; fill?: boolean; width?: number; height?: number;
-  className?: string; priority?: boolean; fallbackClassName?: string;
-}) {
-  const [error, setError] = useState(false);
-  if (error) {
-    return (
-      <div className={`flex items-center justify-center bg-gradient-to-br from-[#111] to-[#222] ${fallbackClassName ?? className ?? ''}`}>
-        <ImageOff size={28} className="text-white/20" />
-      </div>
-    );
-  }
-  return (
-    <Image src={src} alt={alt} fill={fill}
-      width={!fill ? (width ?? 800) : undefined}
-      height={!fill ? (height ?? 600) : undefined}
-      className={className} priority={priority}
-      onError={() => setError(true)} />
-  );
-}
+// --- Hooks ---
 
 const useScrollReveal = (threshold = 0.15) => {
   const ref = useRef<HTMLElement>(null);
@@ -106,208 +44,269 @@ const useScrollReveal = (threshold = 0.15) => {
   return { ref, isVisible };
 };
 
-export default function Page() {
-  const [scrolled, setScrolled] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [form, setForm] = useState({ name: '', email: '', phone: '', message: '' });
-  const [sent, setSent] = useState(false);
-  const [loading, setLoading] = useState(false);
+// --- Components ---
 
+function SafeImage({ src, alt, fill, width, height, className, priority, fallbackClassName }: {
+  src: string; alt: string; fill?: boolean; width?: number; height?: number;
+  className?: string; priority?: boolean; fallbackClassName?: string;
+}) {
+  const [error, setError] = useState(false);
+  if (error) {
+    return (
+      <div className={`flex items-center justify-center bg-zinc-900 border border-white/5 ${fallbackClassName ?? className ?? ''}`}>
+        <ImageOff size={28} className="text-white/10" />
+      </div>
+    );
+  }
+  return (
+    <Image 
+      src={src} 
+      alt={alt} 
+      fill={fill}
+      width={!fill ? (width ?? 800) : undefined}
+      height={!fill ? (height ?? 600) : undefined}
+      className={`${className} transition-opacity duration-700 ${error ? 'opacity-0' : 'opacity-100'}`} 
+      priority={priority}
+      onError={() => setError(true)} 
+    />
+  );
+}
+
+export default function Page() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60);
     window.addEventListener('scroll', onScroll);
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setTimeout(() => { setLoading(false); setSent(true); }, 1500);
+  const brand = {
+    name: "Shantel Fashion World",
+    tagline: "Elevating Abuja's Style with Affordable Luxury",
+    description: "A curated collection of trending designer bags, shoes, and clothing for the modern fashion enthusiast in Abuja.",
+    industry: "Fashion",
+    region: "Nigeria",
+    currency: "₦"
   };
 
-  const navLinks = [
-    { name: "Home", href: "#home" },
-    { name: "Collection", href: "#products" },
-    { name: "Lookbook", href: "#gallery" },
-    { name: "Visit Us", href: "#contact" }
+  const contact = {
+    whatsapp: "2347061200116",
+    instagram: "shantel_fashion_world",
+    email: "",
+    address: "Soar plaza shop B308 1st Avenue Gwarimpa opposite FCMB bank, Abuja Nigeria"
+  };
+
+  const products = [
+    { name: "Signature Designer Handbag", description: "Italian leather with gold-tone hardware and structured silhouette.", price: "₦120,000", image: "https://images.unsplash.com/photo-1652427019217-3ded1a356f10?q=80&w=1080" },
+    { name: "Elite Stiletto Heels", description: "Sleek pointed-toe design with premium cushioning for comfort.", price: "₦85,000", image: "https://images.unsplash.com/photo-1780327007439-d78065bf157d?q=80&w=1080" },
+    { name: "Silk Editorial Evening Gown", description: "Floor-length flowing silk available in trending seasonal colors.", price: "₦45,000", image: "https://images.unsplash.com/photo-1780679022323-7fa14400a8cd?q=80&w=1080" },
+    { name: "Premium Men's Loafers", description: "Hand-stitched suede loafers for the sophisticated modern gentleman.", price: "₦150,000", image: "https://images.unsplash.com/photo-1676121270762-47c8d3a7b9d5?q=80&w=1080" }
   ];
 
-  // Section reveals assignment
-  const sHero = useScrollReveal(0);
-  const sFeatures = useScrollReveal(0.2);
-  const sGallery = useScrollReveal(0.1);
-  const sProducts = useScrollReveal(0.1);
-  const sAbout = useScrollReveal(0.2);
-  const sTestimonials = useScrollReveal(0.2);
-  const sContact = useScrollReveal(0.2);
+  const features = [
+    { title: "Curated Luxury", description: "Every piece is hand-selected to ensure it meets our elite standards.", icon: Gem },
+    { title: "Abuja Delivery", description: "Swift and secure shipping across the capital and nationwide.", icon: Truck },
+    { title: "Trend Setting", description: "Stay ahead of the fashion curve with our weekly new arrivals.", icon: TrendingUp }
+  ];
+
+  const stats = [
+    { number: "3k+", label: "Style Followers" },
+    { number: "500+", label: "Luxury Items" },
+    { number: "100%", label: "Authenticity" }
+  ];
+
+  const testimonials = [
+    { name: "Chioma Adeleke", role: "Lagos Entrepreneur", text: "The quality of the bags at Shantel is unmatched. I always get compliments!" },
+    { name: "Ngozi Okafor", role: "Fashion Stylist", text: "My go-to spot in Gwarimpa for the latest shoes. Fast delivery too!" },
+    { name: "Amaka Yusuf", role: "Loyal Customer", text: "Affordable luxury at its finest. The customer service is top-notch." }
+  ];
+
+  const galleryImages = [
+    "https://images.unsplash.com/photo-1536524894612-c69d62c6f639?q=80",
+    "https://images.unsplash.com/photo-1594994041677-15a66d7c5cea?q=80",
+    "https://images.unsplash.com/photo-1594994043623-ef50cf163197?q=80",
+    "https://images.unsplash.com/photo-1683640862718-c001169c8514?q=80",
+    "https://images.unsplash.com/photo-1673801081941-12cb1fbb1f56?q=80",
+    "https://images.unsplash.com/photo-1775135595254-48b0f9bbf34b?q=80"
+  ];
+
+  // --- Section Reveals ---
+  const heroReveal = useScrollReveal(0.1);
+  const featuresReveal = useScrollReveal(0.15);
+  const galleryReveal = useScrollReveal(0.15);
+  const productsReveal = useScrollReveal(0.1);
+  const aboutReveal = useScrollReveal(0.15);
+  const testimonialsReveal = useScrollReveal(0.15);
+  const contactReveal = useScrollReveal(0.15);
 
   return (
-    <main className="bg-primary text-white">
-      {/* HEADER */}
-      <header className={`fixed w-full z-50 transition-all duration-500 ${scrolled ? 'bg-primary/95 backdrop-blur-xl border-b border-white/5 py-4' : 'bg-transparent py-6'}`}>
+    <div className="relative">
+      {/* --- Navigation --- */}
+      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? 'bg-primary/95 backdrop-blur-xl py-4 border-b border-white/10 shadow-2xl' : 'bg-transparent py-8'}`}>
         <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
-          <div className="flex items-center gap-2 group cursor-pointer">
-            <div className="w-10 h-10 bg-secondary flex items-center justify-center rounded-lg shadow-[0_0_15px_rgba(212,175,55,0.3)] group-hover:scale-105 transition-transform">
-              <span className="text-primary font-black text-xl font-heading">S</span>
+          <div className="flex items-center gap-3 group cursor-pointer">
+            <div className="w-10 h-10 bg-secondary flex items-center justify-center rounded-lg shadow-lg group-hover:rotate-12 transition-transform duration-300">
+              <span className="text-primary font-black text-xl italic">SF</span>
             </div>
-            <span className="font-heading font-black text-xl tracking-tight hidden sm:block">SHANTEL <span className="text-secondary">WORLD</span></span>
+            <span className="text-xl font-heading font-black tracking-tighter hidden sm:block uppercase">Shantel World</span>
           </div>
 
-          <nav className="hidden md:flex items-center gap-10">
-            {navLinks.map((link) => (
-              <a key={link.name} href={link.href} className="text-sm font-medium text-white/70 hover:text-secondary transition-colors tracking-wide">
-                {link.name}
+          <div className="hidden md:flex items-center gap-10">
+            {['Home', 'Products', 'About', 'Contact'].map((link) => (
+              <a key={link} href={`#${link.toLowerCase()}`} className="text-xs uppercase tracking-[0.3em] font-bold text-white/60 hover:text-secondary transition-colors">
+                {link}
               </a>
             ))}
-          </nav>
-
-          <div className="flex items-center gap-4">
-            <a href="#contact" className="hidden sm:block bg-secondary text-primary px-6 py-2.5 rounded-full font-bold text-sm hover:brightness-110 transition-all shadow-lg shadow-secondary/10">
+            <a href="#contact" className="bg-secondary text-primary px-8 py-3 rounded-full font-bold text-sm hover:scale-105 transition-transform">
               Shop Now
             </a>
-            <button onClick={() => setMenuOpen(true)} className="md:hidden text-white">
-              <Menu size={28} />
-            </button>
           </div>
-        </div>
-      </header>
 
-      {/* MOBILE MENU */}
-      <div className={`fixed inset-0 z-[60] bg-primary transition-transform duration-500 ${menuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
-        <div className="p-6 flex flex-col h-full">
-          <div className="flex justify-between items-center mb-16">
-             <span className="font-heading font-black text-2xl tracking-tight">SHANTEL</span>
-             <button onClick={() => setMenuOpen(false)}><X size={32} /></button>
-          </div>
-          <div className="flex flex-col gap-8">
-            {navLinks.map((link) => (
-              <a key={link.name} href={link.href} onClick={() => setMenuOpen(false)} className="text-4xl font-heading font-bold text-white/50 hover:text-secondary transition-colors">
-                {link.name}
+          <button className="md:hidden text-white" onClick={() => setIsMenuOpen(true)}>
+            <Menu size={28} />
+          </button>
+        </div>
+      </nav>
+
+      {/* --- Mobile Sidebar --- */}
+      <div className={`fixed inset-0 z-[100] transition-transform duration-500 transform ${isMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+        <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setIsMenuOpen(false)} />
+        <div className="absolute right-0 top-0 h-full w-[80%] max-w-sm bg-primary border-l border-white/10 p-10 flex flex-col">
+          <button className="self-end text-white/50 mb-12 hover:text-white" onClick={() => setIsMenuOpen(false)}>
+            <X size={32} />
+          </button>
+          <div className="space-y-8">
+            {['Home', 'Products', 'About', 'Contact'].map((link) => (
+              <a key={link} href={`#${link.toLowerCase()}`} className="block text-3xl font-heading font-black text-white" onClick={() => setIsMenuOpen(false)}>
+                {link}
               </a>
             ))}
           </div>
-          <div className="mt-auto pb-10">
-            <p className="text-white/30 text-xs uppercase tracking-[0.4em] mb-4">Abuja HQ</p>
-            <p className="text-white/60 text-sm leading-relaxed max-w-[240px]">
-              {brief.contact.address}
-            </p>
+          <div className="mt-auto pt-10 border-t border-white/5">
+            <p className="text-secondary font-bold mb-4">Visit Us</p>
+            <p className="text-white/40 text-sm leading-relaxed">{contact.address}</p>
           </div>
         </div>
       </div>
 
-      {/* HERO - HR-A Variant */}
-      <section id="home" ref={sHero.ref} className="min-h-screen relative flex items-center justify-center bg-gradient-to-br from-primary via-primary/95 to-secondary/10 px-6 overflow-hidden">
-        <div className="absolute top-1/4 left-1/4 w-[40rem] h-[40rem] bg-secondary/10 rounded-full blur-[140px] pointer-events-none animate-float" />
-        <div className="absolute bottom-1/4 right-1/3 w-80 h-80 bg-secondary/5 rounded-full blur-[100px] pointer-events-none" />
+      {/* --- Hero Section (HR-A) --- */}
+      <section id="home" className="min-h-screen relative flex items-center justify-center bg-gradient-to-br from-primary via-primary/95 to-secondary/10 px-6 overflow-hidden">
+        <div className="absolute top-1/4 left-1/4 w-[32rem] h-[32rem] bg-secondary/10 rounded-full blur-[120px] pointer-events-none animate-float" />
+        <div className="absolute bottom-1/4 right-1/3 w-64 h-64 bg-secondary/5 rounded-full blur-[80px] pointer-events-none" />
         
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full opacity-[0.07] max-w-5xl max-h-[70vh] rounded-[4rem] overflow-hidden rotate-2 pointer-events-none">
-          <SafeImage src={brief.heroImage.url} alt="Luxury fashion world" fill className="object-cover" priority />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full opacity-15 max-w-4xl max-h-[70vh] rounded-[4rem] overflow-hidden rotate-2">
+          <SafeImage src="https://images.unsplash.com/photo-1764181237984-70ac5f211b06?q=80" alt="Hero Fashion" fill className="object-cover" priority />
         </div>
 
         <div className="relative z-10 text-center max-w-5xl">
-          <h1 className={`font-heading text-6xl md:text-[8rem] font-black text-white leading-[0.85] tracking-tighter transition-all duration-1000 ${sHero.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}>
-            THE EPICENTER <br/> OF <span className="text-secondary italic">ELITE STYLE</span>
+          <h1 className={`font-heading text-6xl md:text-[7vw] font-black text-white leading-[0.9] tracking-tighter transition-all duration-1000 ${heroReveal.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+            Defining Elegance for the <br /><span className="text-gold-gradient italic">Modern Wardrobe</span>
           </h1>
-          <p className={`text-white/50 mt-10 text-xl max-w-2xl mx-auto leading-relaxed transition-all duration-1000 delay-300 ${sHero.isVisible ? 'opacity-100' : 'opacity-0'}`}>
-            {brief.brand.description}
+          <p className={`text-white/50 mt-8 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed transition-all duration-1000 delay-300 ${heroReveal.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+            {brand.description}
           </p>
-          <div className={`flex flex-col sm:flex-row gap-5 justify-center mt-12 transition-all duration-1000 delay-500 ${sHero.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-            <a href="#products" className="bg-secondary text-primary px-12 py-5 font-black text-lg hover:brightness-110 hover:scale-105 transition-all duration-300 rounded-full shadow-2xl shadow-secondary/20 flex items-center justify-center gap-2">
-              Explore Collection <ArrowRight size={20} />
+          <div className={`flex flex-col sm:flex-row gap-6 justify-center mt-12 transition-all duration-1000 delay-500 ${heroReveal.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+            <a href="#products" className="bg-secondary text-primary px-12 py-5 font-bold text-lg hover:brightness-110 hover:scale-105 transition-all duration-300 rounded-full shadow-[0_0_30px_rgba(197,160,89,0.3)]">
+              Shop the Collection
             </a>
-            <a href="#gallery" className="border border-white/20 text-white px-12 py-5 font-medium text-lg hover:bg-white/5 transition-all duration-300 rounded-full flex items-center justify-center">
-              View Lookbook
+            <a href="#about" className="border border-white/20 text-white px-12 py-5 font-medium text-lg hover:bg-white/5 transition-all duration-300 rounded-full">
+              Explore Story
             </a>
           </div>
         </div>
       </section>
 
-      {/* DIVIDER - D-QUOTE */}
-      <div className="py-24 px-8 text-center bg-secondary/5 border-y border-white/5 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(212,175,55,0.05),transparent_70%)]" />
-        <p className="relative font-heading text-3xl md:text-5xl font-black text-white max-w-4xl mx-auto leading-tight italic">
-          &ldquo;{brief.brand.tagline}&rdquo;
-        </p>
-        <p className="relative text-secondary/40 mt-6 text-xs tracking-[0.5em] uppercase font-bold">{brief.brand.name}</p>
+      {/* --- Divider --- */}
+      <div className="py-12 flex items-center gap-8 px-8 max-w-6xl mx-auto">
+        <div className="flex-1 h-px bg-gradient-to-r from-transparent via-secondary/40 to-transparent" />
+        <span className="text-secondary font-mono text-xs tracking-[0.5em] uppercase whitespace-nowrap opacity-70">
+          Abuja&apos;s Best Boutique
+        </span>
+        <div className="flex-1 h-px bg-gradient-to-r from-transparent via-secondary/40 to-transparent" />
       </div>
 
-      {/* FEATURES - F-BENTO Variant */}
-      <section ref={sFeatures.ref} className="py-28 px-6 bg-[#0a0a0a]">
-        <div className="max-w-7xl mx-auto">
+      {/* --- Features (F-BENTO) --- */}
+      <section id="features" ref={featuresReveal.ref} className="py-28 px-6 bg-primary">
+        <div className="max-w-6xl mx-auto">
           <div className="mb-16 text-center md:text-left">
-            <h2 className="font-heading text-5xl font-black text-white mb-4">WHY SHANTEL?</h2>
-            <p className="text-white/40 text-lg">Uncompromising quality for the modern trendsetter.</p>
+            <h2 className="font-heading text-5xl md:text-6xl font-black text-white mb-4">Why Shop With Us</h2>
+            <p className="text-white/40 text-lg uppercase tracking-widest">Sharp delivery, nationwide boutique service.</p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-            <div className={`md:col-span-2 bg-secondary/10 rounded-3xl p-10 border border-secondary/20 hover:border-secondary/40 transition-all duration-500 flex flex-col justify-between group min-h-[300px] ${sFeatures.isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-12'}`}>
-              <div className="w-16 h-16 rounded-2xl bg-secondary/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className={`md:col-span-2 bg-zinc-900 rounded-[2.5rem] p-12 border border-white/5 hover:border-secondary/30 transition-all duration-500 flex flex-col justify-between group min-h-[350px] relative overflow-hidden ${featuresReveal.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}>
+              <div className="absolute top-0 right-0 w-64 h-64 bg-secondary/5 blur-3xl rounded-full" />
+              <div className="w-16 h-16 rounded-2xl bg-secondary/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
                 <Gem className="text-secondary" size={32} />
               </div>
-              <div>
-                <h3 className="font-heading text-4xl font-black text-white">{brief.features[0].title}</h3>
-                <p className="text-white/50 mt-4 text-lg max-w-md">{brief.features[0].description}</p>
+              <div className="relative z-10">
+                <h3 className="font-heading text-4xl font-black text-white">{features[0].title}</h3>
+                <p className="text-white/50 mt-4 text-lg max-w-md">{features[0].description}</p>
               </div>
             </div>
-            <div className="space-y-5">
-              {brief.features.slice(1).map((f, i) => (
-                <div key={i} className={`bg-white/5 rounded-3xl p-8 border border-white/5 hover:bg-white/8 hover:border-white/10 transition-all duration-300 flex flex-col justify-between min-h-[142px] group ${sFeatures.isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-12'}`} style={{ transitionDelay: `${i * 200}ms` }}>
-                  <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center group-hover:text-secondary transition-colors">
-                    <f.icon size={20} />
+            {features.slice(1).map((f, i) => {
+              const Icon = f.icon;
+              return (
+                <div key={i} className={`bg-zinc-900 rounded-[2.5rem] p-10 border border-white/5 hover:bg-zinc-800/50 hover:border-white/10 transition-all duration-500 flex flex-col justify-between min-h-[350px] transition-all duration-700 delay-200 ${featuresReveal.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`} style={{ transitionDelay: `${(i + 1) * 200}ms` }}>
+                  <div className="w-14 h-14 rounded-xl bg-white/5 flex items-center justify-center">
+                    <Icon className="text-secondary" size={28} />
                   </div>
                   <div>
-                    <h3 className="font-heading text-xl font-bold text-white">{f.title}</h3>
-                    <p className="text-white/45 text-sm mt-1">{f.description}</p>
+                    <h3 className="font-heading text-2xl font-bold text-white">{f.title}</h3>
+                    <p className="text-white/45 mt-3 leading-relaxed">{f.description}</p>
                   </div>
                 </div>
-              ))}
-            </div>
+              );
+            })}
           </div>
         </div>
       </section>
 
-      {/* GALLERY - MASONRY Variant */}
-      <section id="gallery" ref={sGallery.ref} className="py-28 px-6 bg-primary overflow-hidden">
+      {/* --- Gallery --- */}
+      <section ref={galleryReveal.ref} className="py-28 px-6 bg-zinc-900/40">
         <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col md:flex-row items-end justify-between mb-16 gap-6">
-            <h2 className={`font-heading text-6xl md:text-7xl font-black text-white leading-none transition-all duration-700 ${sGallery.isVisible ? 'opacity-100 skew-y-0 translate-y-0' : 'opacity-0 skew-y-2 translate-y-8'}`}>
-              THE <span className="text-secondary italic">LOOKBOOK</span>
-            </h2>
-            <p className="text-white/40 max-w-xs text-sm font-medium uppercase tracking-[0.2em] md:text-right">High-definition aesthetics for the editorial eye.</p>
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+            <h2 className="font-heading text-5xl md:text-6xl font-black text-white">The Lookbook</h2>
+            <p className="text-white/40 max-w-sm">A visual journey through our latest seasonal edits and editorial features.</p>
           </div>
           <div className="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
-            {brief.gallery.map((src, i) => (
-              <div key={i} className={`break-inside-avoid group relative rounded-[2rem] overflow-hidden shadow-2xl transition-all duration-700 ${sGallery.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`} style={{ transitionDelay: `${i * 100}ms` }}>
-                <SafeImage src={src} alt={`Lookbook item ${i + 1}`} 
-                  className="w-full h-auto object-cover group-hover:scale-110 transition-transform duration-1000 grayscale group-hover:grayscale-0" />
-                <div className="absolute inset-0 bg-gradient-to-t from-primary via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                <div className="absolute bottom-6 left-6 opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500">
-                  <span className="bg-secondary/90 text-primary px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest backdrop-blur-md">Collection 2024</span>
-                </div>
+            {galleryImages.map((src, i) => (
+              <div key={i} className={`break-inside-avoid group relative rounded-[2rem] overflow-hidden transition-all duration-700 ${galleryReveal.isVisible ? 'opacity-100 translate-y-0 blur-0' : 'opacity-0 translate-y-8 blur-sm'}`} style={{ transitionDelay: `${i * 100}ms` }}>
+                <SafeImage src={src} alt={`Lookbook ${i + 1}`} className="w-full h-auto object-cover grayscale hover:grayscale-0 transition-all duration-1000 scale-100 group-hover:scale-110" />
+                <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-all duration-500" />
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* PRODUCTS - P-EDITORIAL Variant */}
-      <section id="products" ref={sProducts.ref} className="py-28 px-6 bg-[#0c0c0c]">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="text-center font-heading text-6xl font-black text-white mb-20 tracking-tighter">FEATURED ARRIVALS</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {brief.products.map((p, i) => (
-              <div key={i} className={`group relative h-[450px] md:h-[550px] rounded-[2.5rem] overflow-hidden border border-white/5 transition-all duration-1000 ${sProducts.isVisible ? 'scale-100 opacity-100' : 'scale-95 opacity-0'}`} style={{ transitionDelay: `${i * 150}ms` }}>
-                <SafeImage src={p.url} alt={p.name} fill
-                  className="object-cover group-hover:scale-105 transition-all duration-1000 opacity-60 group-hover:opacity-100" />
-                <div className="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/20 to-transparent" />
-                <div className="absolute bottom-0 left-0 right-0 p-10 relative z-10">
-                  <h3 className="text-4xl font-heading font-black text-white">{p.name}</h3>
-                  <div className="overflow-hidden transition-all duration-500 max-h-0 group-hover:max-h-24 opacity-0 group-hover:opacity-100">
-                    <p className="text-white/60 mt-4 text-lg leading-relaxed max-w-md">{p.description}</p>
+      {/* --- Products (P-STAGGER) --- */}
+      <section id="products" ref={productsReveal.ref} className="py-28 px-6 bg-primary overflow-hidden">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-28">
+            <p className="text-secondary font-mono tracking-[0.5em] uppercase text-xs mb-4">Shop Affordable Luxury</p>
+            <h2 className="font-heading text-6xl md:text-7xl font-black text-white">New Arrivals</h2>
+          </div>
+          <div className="space-y-40">
+            {products.map((p, i) => (
+              <div key={i} className={`flex flex-col ${i % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'} items-center gap-16 md:gap-24 transition-all duration-1000 ${productsReveal.isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`} style={{ transitionDelay: `${i * 100}ms` }}>
+                <div className="w-full md:w-1/2 relative group">
+                  <div className="aspect-[4/5] relative rounded-[3rem] overflow-hidden shadow-2xl border border-white/5">
+                    <SafeImage src={p.image} alt={p.name} fill className="object-cover group-hover:scale-110 transition-transform duration-[2s]" />
                   </div>
-                  <div className="flex justify-between items-center mt-8">
-                    <span className="text-secondary font-black text-3xl">{p.price}</span>
-                    <a href={`https://wa.me/${brief.contact.whatsapp}?text=I am interested in the ${p.name}`} className="bg-white text-primary px-8 py-3 rounded-full font-black text-sm hover:bg-secondary hover:text-primary transition-all duration-300">
-                      Enquire
+                  <div className={`absolute -bottom-10 ${i % 2 === 0 ? '-right-10' : '-left-10'} w-2/3 h-2/3 bg-secondary/10 rounded-[3rem] -z-10 blur-3xl`} />
+                </div>
+                <div className={`w-full md:w-1/2 ${i % 2 === 0 ? 'text-left' : 'md:text-right'}`}>
+                  <span className="font-mono text-secondary text-sm font-bold tracking-widest uppercase mb-6 block">
+                    Collection Piece 0{i + 1}
+                  </span>
+                  <h3 className="font-heading text-5xl md:text-6xl font-black text-white leading-tight mb-6">{p.name}</h3>
+                  <p className="text-white/50 text-xl leading-relaxed mb-8">{p.description}</p>
+                  <div className={`flex flex-col gap-8 ${i % 2 === 0 ? 'items-start' : 'md:items-end'}`}>
+                    <span className="text-4xl font-black text-white">{p.price}</span>
+                    <a href={`https://wa.me/${contact.whatsapp}?text=I'm interested in the ${p.name}`} className="bg-secondary text-primary px-10 py-5 rounded-full font-black text-lg hover:translate-y-[-4px] transition-transform shadow-xl">
+                      Order via WhatsApp
                     </a>
                   </div>
                 </div>
@@ -317,61 +316,55 @@ export default function Page() {
         </div>
       </section>
 
-      {/* ABOUT - V3 Variant with V9 Stats */}
-      <section id="about" ref={sAbout.ref} className="py-28 px-6 bg-primary overflow-hidden">
+      {/* --- About Section (Split + Stats) --- */}
+      <section id="about" ref={aboutReveal.ref} className="py-28 px-6 bg-zinc-900 relative">
         <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-20 items-center">
-          <div className={`transition-all duration-1000 ${sAbout.isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-20'}`}>
-            <h2 className="font-heading text-6xl font-black text-white leading-tight mb-8">WHERE <span className="text-secondary italic">LUXURY</span> MEETS HERITAGE</h2>
-            <p className="text-white/60 text-xl leading-relaxed mb-10">
-              Located in the heart of Gwarimpa, Shantel Fashion World began with a single mission: to bring world-class designer aesthetics to the Nigerian woman. We bridge the gap between high-street trends and luxury craftsmanship.
-            </p>
-            <div className="grid grid-cols-2 gap-10">
-              {[
-                { n: '3k+', l: 'Muses Served', i: Users },
-                { n: '100%', l: 'Authentic', i: ShieldCheck }
-              ].map((stat, i) => (
-                <div key={i} className={`transition-all duration-1000 ${sAbout.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`} style={{ transitionDelay: `${600 + i * 200}ms` }}>
-                  <div className="flex items-center gap-3 text-secondary mb-3">
-                    <stat.i size={24} />
-                    <span className="text-3xl font-heading font-black">{stat.n}</span>
-                  </div>
-                  <p className="text-white/40 text-xs uppercase tracking-widest font-bold">{stat.l}</p>
+          <div className={`transition-all duration-1000 ${aboutReveal.isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-20'}`}>
+            <h2 className="font-heading text-5xl md:text-6xl font-black text-white mb-10">Our Fashion Story</h2>
+            <div className="space-y-6">
+              <p className="text-white/60 text-xl leading-relaxed">
+                Located in the vibrant Soar Plaza, Shantel Fashion World is Abuja&apos;s premier destination for those who demand style without compromise.
+              </p>
+              <p className="text-white/40 text-lg leading-relaxed">
+                We bridge the gap between high-end designer aesthetics and accessible luxury pricing. Our mission is to empower every individual to express their unique persona through premium fabrics and impeccable designs.
+              </p>
+            </div>
+            <div className="mt-16 grid grid-cols-3 gap-8">
+              {stats.map((s, i) => (
+                <div key={i} className={`transition-all duration-1000 delay-300 ${aboutReveal.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+                  <p className="text-3xl md:text-4xl font-heading font-black text-secondary">{s.number}</p>
+                  <p className="text-white/40 text-xs uppercase tracking-widest mt-2">{s.label}</p>
                 </div>
               ))}
             </div>
           </div>
-          <div className={`relative transition-all duration-1000 delay-300 ${sAbout.isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'}`}>
-            <div className="aspect-square relative rounded-full overflow-hidden border-8 border-white/5 p-4">
-              <div className="w-full h-full rounded-full overflow-hidden relative">
-                <SafeImage src={brief.gallery[4]} alt="Shantel Fashion Boutique" fill className="object-cover" />
-              </div>
-            </div>
-            <div className="absolute -top-4 -right-4 bg-secondary text-primary w-24 h-24 rounded-full flex items-center justify-center animate-float">
-               <ShoppingBag size={40} strokeWidth={2.5} />
+          <div className={`relative aspect-square md:aspect-auto md:h-[600px] rounded-[3rem] overflow-hidden transition-all duration-1000 delay-300 ${aboutReveal.isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'}`}>
+            <SafeImage src="https://images.unsplash.com/photo-1594994043623-ef50cf163197?q=80" alt="Boutique Interior" fill className="object-cover" />
+            <div className="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent" />
+            <div className="absolute bottom-10 left-10 right-10 p-8 bg-black/40 backdrop-blur-md rounded-2xl border border-white/10">
+              <p className="italic text-white/80 text-lg">&ldquo;True style is a reflection of your soul, curated with intention and worn with confidence.&rdquo;</p>
+              <p className="text-secondary font-bold mt-4 uppercase tracking-widest text-xs">— The Shantel Philosophy</p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* TESTIMONIALS - T-SPOTLIGHT Variant */}
-      <section ref={sTestimonials.ref} className="py-28 px-6 bg-secondary/5">
-        <div className="max-w-4xl mx-auto text-center">
-          <div className="w-16 h-px bg-secondary mx-auto mb-10" />
-          <h2 className="font-heading text-5xl font-black text-white mb-20 tracking-tight">THE SHANTEL MUSE</h2>
-          <div className="space-y-12">
-            {[
-              { name: "Chidi Okafor", text: "The only place in Abuja I trust for my designer bags. The quality is unmatched.", role: "Fashion Influencer" },
-              { name: "Amara Bello", text: "Their customer service is just as premium as their shoes. A 10/10 shopping experience.", role: "Business Executive" }
-            ].map((t, i) => (
-              <div key={i} className={`relative py-12 px-10 rounded-[2.5rem] border border-white/5 bg-primary/40 backdrop-blur-md transition-all duration-1000 ${sTestimonials.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`} style={{ transitionDelay: `${i * 200}ms` }}>
-                <div className="absolute -top-6 left-1/2 -translate-x-1/2 w-12 h-12 rounded-full bg-secondary flex items-center justify-center border-4 border-primary shadow-xl">
-                  <span className="text-primary text-2xl font-black leading-none italic">&ldquo;</span>
-                </div>
-                <p className="text-white/80 text-2xl leading-relaxed font-medium font-heading italic">&ldquo;{t.text}&rdquo;</p>
-                <div className="mt-10 flex items-center justify-center gap-4">
-                  <div className="text-center">
-                    <p className="font-heading font-black text-white text-xl tracking-wide">{t.name}</p>
-                    <p className="text-secondary text-xs uppercase tracking-widest font-bold mt-1">{t.role}</p>
+      {/* --- Testimonials (T-MASONRY) --- */}
+      <section id="testimonials" ref={testimonialsReveal.ref} className="py-28 px-6 bg-primary">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="font-heading text-5xl md:text-6xl font-black text-white text-center mb-20">Voices of Style</h2>
+          <div className="columns-1 md:columns-2 lg:columns-3 gap-8 space-y-8">
+            {testimonials.map((t, i) => (
+              <div key={i} className={`break-inside-avoid bg-zinc-900 p-10 rounded-[2.5rem] border border-white/5 relative overflow-hidden group hover:border-secondary/20 transition-all duration-500 transition-all duration-700 ${testimonialsReveal.isVisible ? 'opacity-100 translate-y-0 blur-0' : 'opacity-0 translate-y-6 blur-sm'}`} style={{ transitionDelay: `${i * 150}ms` }}>
+                <div className="absolute top-0 right-0 w-24 h-24 bg-secondary/5 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity" />
+                <p className="text-white/80 text-xl leading-relaxed relative z-10 italic">&ldquo;{t.text}&rdquo;</p>
+                <div className="flex items-center justify-between border-t border-white/10 pt-8 mt-8 relative z-10">
+                  <div>
+                    <p className="font-heading font-bold text-white text-lg">{t.name}</p>
+                    <p className="text-secondary/60 text-xs mt-1 uppercase tracking-widest">{t.role}</p>
+                  </div>
+                  <div className="flex gap-1">
+                    {[1,2,3].map(n => <div key={n} className="w-2 h-2 rounded-full bg-secondary/40" />)}
                   </div>
                 </div>
               </div>
@@ -380,127 +373,178 @@ export default function Page() {
         </div>
       </section>
 
-      {/* CONTACT - C3 Variant */}
-      <section id="contact" ref={sContact.ref} className="py-32 px-6 bg-primary relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-secondary/5 blur-[120px] rounded-full pointer-events-none" />
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-20">
-            <p className="text-secondary font-bold text-xs tracking-[0.5em] uppercase mb-4">Visit Us</p>
-            <h2 className="font-heading text-6xl font-black text-white mb-6">GET IN TOUCH</h2>
-            <div className="flex flex-col md:flex-row justify-center gap-8 text-white/50 text-sm font-medium">
-               <div className="flex items-center gap-2 justify-center">
-                 <MapPin size={16} className="text-secondary" /> {brief.contact.address}
-               </div>
-               <div className="flex items-center gap-2 justify-center">
-                 <Phone size={16} className="text-secondary" /> {brief.contact.whatsapp}
-               </div>
-            </div>
+      {/* --- Contact Section (C2) --- */}
+      <section id="contact" ref={contactReveal.ref} className="py-32 px-6 bg-primary relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-1/2 h-full bg-secondary/5 -skew-x-12 translate-x-20" />
+        <div className="max-w-7xl mx-auto relative z-10 grid md:grid-cols-2 gap-20 items-center">
+          <div className={`bg-zinc-900/60 backdrop-blur-3xl p-8 md:p-16 rounded-[3rem] border border-white/10 shadow-2xl transition-all duration-1000 ${contactReveal.isVisible ? 'opacity-100 translate-y-0 skew-y-0' : 'opacity-0 translate-y-8 skew-y-2'}`}>
+            <ContactForm />
           </div>
-
-          <div className={`transition-all duration-1000 ${sContact.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}>
-            {sent ? (
-              <div className="flex flex-col items-center justify-center p-16 text-center animate-scaleIn bg-white/5 rounded-[3rem] border border-white/10 relative overflow-hidden">
-                <div className="w-24 h-24 rounded-full bg-secondary/20 flex items-center justify-center mb-8 border border-secondary/40 shadow-2xl">
-                  <CheckCheck size={44} className="text-secondary" />
+          <div className={`text-left transition-all duration-1000 delay-300 ${contactReveal.isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'}`}>
+            <h2 className="font-heading text-6xl md:text-8xl font-black text-white mb-10 leading-tight">Visit Our <br /><span className="text-secondary italic">Boutique</span></h2>
+            <div className="space-y-10">
+              <div className="flex gap-6 items-start group">
+                <div className="w-14 h-14 rounded-2xl bg-secondary/10 flex items-center justify-center shrink-0 border border-secondary/20 group-hover:bg-secondary group-hover:text-primary transition-all duration-300">
+                  <MapPin size={28} />
                 </div>
-                <h3 className="font-heading text-4xl font-black text-white mb-4">Message Sent</h3>
-                <p className="text-white/60 max-w-sm text-lg">Our styling team will review your inquiry and respond via WhatsApp shortly.</p>
+                <div>
+                  <h4 className="text-white font-bold text-xl mb-2">Location</h4>
+                  <p className="text-white/50 text-lg leading-relaxed">{contact.address}</p>
+                </div>
               </div>
-            ) : (
-              <form onSubmit={handleSubmit} className="space-y-6 bg-white/5 p-8 md:p-14 rounded-[3rem] border border-white/10 shadow-2xl backdrop-blur-xl">
-                <div className="grid md:grid-cols-2 gap-6">
-                  {['name', 'email'].map(field => (
-                    <input
-                      key={field}
-                      type={field === 'email' ? 'email' : 'text'}
-                      placeholder={field.charAt(0).toUpperCase() + field.slice(1)}
-                      value={form[field as keyof typeof form]}
-                      onChange={e => setForm(prev => ({ ...prev, [field]: e.target.value }))}
-                      required
-                      className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-5 text-white placeholder-white/30 outline-none transition-all focus:border-secondary focus:bg-white/10"
-                    />
-                  ))}
+              <div className="flex gap-6 items-start group">
+                <div className="w-14 h-14 rounded-2xl bg-secondary/10 flex items-center justify-center shrink-0 border border-secondary/20 group-hover:bg-secondary group-hover:text-primary transition-all duration-300">
+                  <Instagram size={28} />
                 </div>
-                <input
-                  type="text"
-                  placeholder="WhatsApp Number"
-                  value={form.phone}
-                  onChange={e => setForm(prev => ({ ...prev, phone: e.target.value }))}
-                  required
-                  className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-5 text-white placeholder-white/30 outline-none transition-all focus:border-secondary focus:bg-white/10"
-                />
-                <textarea
-                  rows={5}
-                  placeholder="Tell us about the piece you are looking for..."
-                  value={form.message}
-                  onChange={e => setForm(prev => ({ ...prev, message: e.target.value }))}
-                  required
-                  className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-5 text-white placeholder-white/30 outline-none transition-all focus:border-secondary focus:bg-white/10 resize-none"
-                />
-                <button type="submit" disabled={loading}
-                  className="w-full bg-secondary text-primary py-6 rounded-2xl font-black text-lg hover:brightness-110 hover:scale-[1.02] transition-all disabled:opacity-60 flex justify-center items-center gap-3">
-                  {loading ? <Loader2 className="animate-spin" /> : "Send Inquiry"}
-                </button>
-              </form>
-            )}
+                <div>
+                  <h4 className="text-white font-bold text-xl mb-2">Social</h4>
+                  <p className="text-white/50 text-lg leading-relaxed">@shantel_fashion_world</p>
+                  <a href={contact.instagram} className="text-secondary font-bold mt-2 inline-block">Follow Edits →</a>
+                </div>
+              </div>
+              <div className="flex gap-6 items-start group">
+                <div className="w-14 h-14 rounded-2xl bg-secondary/10 flex items-center justify-center shrink-0 border border-secondary/20 group-hover:bg-secondary group-hover:text-primary transition-all duration-300">
+                  <Phone size={28} />
+                </div>
+                <div>
+                  <h4 className="text-white font-bold text-xl mb-2">WhatsApp Line</h4>
+                  <p className="text-white/50 text-lg leading-relaxed">+{contact.whatsapp}</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* FOOTER */}
-      <footer className="bg-[#050505] pt-28 pb-10 px-6 border-t border-white/5">
+      {/* --- Footer --- */}
+      <footer className="bg-primary border-t border-white/5 pt-24 pb-12 px-6">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-16 mb-20">
             <div className="md:col-span-2">
               <div className="flex items-center gap-3 mb-8">
                 <div className="w-12 h-12 bg-secondary flex items-center justify-center rounded-xl">
-                  <span className="text-primary font-black text-2xl font-heading">S</span>
+                  <span className="text-primary font-black text-2xl italic">SF</span>
                 </div>
-                <span className="font-heading font-black text-2xl tracking-tighter uppercase">SHANTEL <span className="text-secondary">FASHION</span></span>
+                <span className="text-2xl font-heading font-black tracking-tighter uppercase">Shantel Fashion World</span>
               </div>
-              <p className="text-white/40 text-lg leading-relaxed max-w-sm">
-                Redefining the Abuja fashion landscape with curated luxury for the modern trendsetter.
+              <p className="text-white/40 text-lg leading-relaxed max-w-sm mb-8">
+                Abuja&apos;s premier destination for curated affordable luxury. Bridging high-fashion style with everyday elegance.
               </p>
-              <div className="flex gap-6 mt-10">
-                <a href={`https://instagram.com/${brief.contact.instagram}`} className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center text-white/40 hover:text-secondary hover:border-secondary transition-all">
+              <div className="flex gap-4">
+                <a href={contact.instagram} className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center hover:border-secondary hover:text-secondary transition-all">
                   <Instagram size={20} />
                 </a>
-                <a href={`https://wa.me/${brief.contact.whatsapp}`} className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center text-white/40 hover:text-secondary hover:border-secondary transition-all">
+                <a href={`https://wa.me/${contact.whatsapp}`} className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center hover:border-secondary hover:text-secondary transition-all">
                   <Phone size={20} />
                 </a>
               </div>
             </div>
-            
             <div>
-              <h4 className="font-bold text-white text-sm uppercase tracking-widest mb-8">Quick Links</h4>
+              <h4 className="font-bold text-white mb-8 text-sm uppercase tracking-[0.2em]">Quick Links</h4>
               <ul className="space-y-4">
-                {navLinks.map(l => (
-                  <li key={l.name}><a href={l.href} className="text-white/50 hover:text-secondary transition-colors text-sm">{l.name}</a></li>
+                {['Home', 'Products', 'About', 'Contact'].map(link => (
+                  <li key={link}>
+                    <a href={`#${link.toLowerCase()}`} className="text-white/50 hover:text-secondary transition-colors text-lg">{link}</a>
+                  </li>
                 ))}
               </ul>
             </div>
-
             <div>
-              <h4 className="font-bold text-white text-sm uppercase tracking-widest mb-8">Visit Us</h4>
-              <p className="text-white/50 text-sm leading-relaxed">
-                {brief.contact.address}
+              <h4 className="font-bold text-white mb-8 text-sm uppercase tracking-[0.2em]">Our Presence</h4>
+              <p className="text-white/50 text-lg leading-relaxed">
+                Gwarimpa, Abuja <br /> Nigeria
               </p>
-              <p className="mt-6 font-bold text-white text-xs uppercase tracking-widest">Opening Hours</p>
-              <p className="text-white/40 text-xs mt-2">Mon — Sat: 10am — 7pm</p>
+              <p className="text-secondary font-bold mt-4">Sharp delivery, nationwide.</p>
             </div>
           </div>
-          
-          <div className="pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
-            <p className="text-white/20 text-xs tracking-widest uppercase">
-              © {new Date().getFullYear()} Shantel Fashion World. Abuja, Nigeria.
+          <div className="pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-8">
+            <p className="text-white/30 text-sm">
+              &copy; {new Date().getFullYear()} Shantel Fashion World. All Rights Reserved.
             </p>
-            <div className="flex gap-10">
-               <span className="text-white/20 text-xs tracking-widest uppercase cursor-pointer hover:text-white transition-colors">Privacy</span>
-               <span className="text-white/20 text-xs tracking-widest uppercase cursor-pointer hover:text-white transition-colors">Terms</span>
+            <div className="flex gap-8 text-xs text-white/20 uppercase tracking-widest font-bold">
+              <span>Privacy Policy</span>
+              <span>Terms of Service</span>
             </div>
           </div>
         </div>
       </footer>
-    </main>
+    </div>
+  );
+}
+
+function ContactForm() {
+  const [form, setForm] = useState({ name: '', email: '', phone: '', message: '' });
+  const [sent, setSent] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setTimeout(() => { setLoading(false); setSent(true); }, 1500);
+  };
+
+  if (sent) {
+    return (
+      <div className="flex flex-col items-center justify-center py-12 text-center animate-scaleIn">
+        <div className="w-24 h-24 rounded-full bg-secondary/20 flex items-center justify-center mb-8 border border-secondary/40 shadow-[0_0_50px_rgba(197,160,89,0.2)]">
+          <CheckCheck size={40} className="text-secondary" />
+        </div>
+        <h3 className="font-heading text-4xl font-black text-white mb-4">Request Sent</h3>
+        <p className="text-white/60 max-w-sm text-lg leading-relaxed">
+          Thank you for reaching out. Our stylist will respond to your inquiry shortly via phone or email.
+        </p>
+        <button onClick={() => setSent(false)} className="mt-10 text-secondary font-bold flex items-center gap-2 hover:gap-3 transition-all">
+          Send another message <ChevronRight size={16} />
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-6">
+      <div>
+        <h3 className="font-heading text-3xl font-black text-white mb-2">Send an Inquiry</h3>
+        <p className="text-white/40 mb-8">Tell us what you&apos;re looking for and we&apos;ll check our latest stock.</p>
+      </div>
+      <div className="space-y-4">
+        {(['name', 'email', 'phone'] as const).map(field => (
+          <div key={field} className="relative group">
+            <input
+              type={field === 'email' ? 'email' : 'text'}
+              placeholder={field.charAt(0).toUpperCase() + field.slice(1)}
+              value={form[field]}
+              onChange={e => setForm(prev => ({ ...prev, [field]: e.target.value }))}
+              required={field !== 'phone'}
+              className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white placeholder-white/30 text-base outline-none transition-all duration-300 focus:bg-white/10 focus:border-secondary/50 group-hover:border-white/20"
+            />
+          </div>
+        ))}
+        <div className="relative group">
+          <textarea 
+            rows={4} 
+            placeholder="What items are you interested in? (Bags, Shoes, specific sizes...)"
+            value={form.message}
+            onChange={e => setForm(prev => ({ ...prev, message: e.target.value }))}
+            required
+            className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white placeholder-white/30 text-base outline-none resize-none transition-all duration-300 focus:bg-white/10 focus:border-secondary/50 group-hover:border-white/20"
+          />
+        </div>
+      </div>
+      <button 
+        type="submit" 
+        disabled={loading}
+        className="w-full bg-secondary text-primary py-5 rounded-2xl font-black text-lg hover:brightness-110 hover:shadow-[0_0_30px_rgba(197,160,89,0.3)] transition-all duration-300 disabled:opacity-60 disabled:cursor-not-allowed flex justify-center items-center gap-3 group"
+      >
+        {loading ? (
+          <span className="flex items-center gap-2">
+            <Loader2 className="animate-spin" size={24} /> Processing...
+          </span>
+        ) : (
+          <>
+            Send Inquiry <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+          </>
+        )}
+      </button>
+    </form>
   );
 }

@@ -1,31 +1,30 @@
-import { Playfair_Display, Outfit } from 'next/font/google';
-import './globals.css';
+import type { Metadata } from "next";
+import { Playfair_Display, Outfit } from "next/font/google";
+import "./globals.css";
 
-const heading = Playfair_Display({ 
-  subsets: ['latin'], 
-  variable: '--font-heading',
-  weight: ['400', '700', '900']
+const headingFont = Playfair_Display({ 
+  subsets: ["latin"], 
+  variable: "--font-heading" 
 });
 
-const body = Outfit({ 
-  subsets: ['latin'], 
-  variable: '--font-body',
-  weight: ['300', '400', '500', '600', '700']
+const bodyFont = Outfit({ 
+  subsets: ["latin"], 
+  variable: "--font-body" 
 });
 
-export const metadata = {
-  title: 'Shantel Fashion World | Abuja Luxury Boutique',
-  description: "Abuja's premier destination for curated luxury bags, designer footwear, and trending editorial fashion.",
+export const metadata: Metadata = {
+  title: "Shantel Fashion World | Abuja's Premier Luxury Boutique",
+  description: "Curated collection of designer bags, shoes, and clothing in Gwarimpa, Abuja.",
 };
 
 export default function RootLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode;
-}) {
+}>) {
   return (
-    <html lang="en">
-      <body className={`${heading.variable} ${body.variable} font-sans`}>
+    <html lang="en" className="dark">
+      <body className={`${headingFont.variable} ${bodyFont.variable} font-sans bg-primary text-white antialiased`}>
         {children}
       </body>
     </html>
