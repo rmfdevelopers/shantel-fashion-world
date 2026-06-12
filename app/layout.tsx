@@ -1,30 +1,27 @@
-import type { Metadata } from "next";
-import { Playfair_Display, Outfit } from "next/font/google";
-import "./globals.css";
+import { Playfair_Display, Outfit } from 'next/font/google';
+import './globals.css';
 
-const headingFont = Playfair_Display({ 
-  subsets: ["latin"], 
-  variable: "--font-heading" 
+const heading = Playfair_Display({ 
+  subsets: ['latin'], 
+  variable: '--font-heading',
+  weight: ['400', '700', '900']
 });
 
-const bodyFont = Outfit({ 
-  subsets: ["latin"], 
-  variable: "--font-body" 
+const body = Outfit({ 
+  subsets: ['latin'], 
+  variable: '--font-body',
+  weight: ['300', '400', '500', '600']
 });
 
-export const metadata: Metadata = {
-  title: "Shantel Fashion World | Abuja's Premier Luxury Boutique",
-  description: "Curated collection of designer bags, shoes, and clothing in Gwarimpa, Abuja.",
+export const metadata = {
+  title: 'Shantel Fashion World | Abuja Luxury Boutique',
+  description: 'Redefining Elegance for the Modern Silhouette. Abuja\'s premier destination for curated luxury bags and footwear.',
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className="dark">
-      <body className={`${headingFont.variable} ${bodyFont.variable} font-sans bg-primary text-white antialiased`}>
+    <html lang="en" className="scrollbar-hide">
+      <body className={`${heading.variable} ${body.variable} font-sans antialiased selection:bg-primary selection:text-secondary`}>
         {children}
       </body>
     </html>
